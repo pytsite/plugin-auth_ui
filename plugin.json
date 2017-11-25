@@ -1,0 +1,22 @@
+{
+  "name": "auth_ui",
+  "version": "1.0",
+  "description": {
+    "en": "Auth UI",
+    "ru": "Auth UI",
+    "uk": "Auth UI"
+  },
+  "url": "https://github.com/pytsite/plugin-auth_ui",
+  "author": {
+    "name": "Alexander Shepetko",
+    "email": "a@shepetko.com",
+    "url": "https://shepetko.com"
+  },
+  "requires": {
+    "packages": [],
+    "plugins": [
+      "auth",
+      "widget"
+    ]
+  }
+}
