@@ -78,7 +78,7 @@ class SignInSubmit(_routing.Controller):
             _auth.sign_in(driver, inp)
             return self.redirect(redirect)
 
-        except (_auth.error.AuthenticationError, _auth.error.UserNotExist):
+        except (_auth.error.AuthenticationError, _auth.error.UserNotFound):
             _router.session().add_error_message(_lang.t('auth_ui@authentication_error'))
 
             return self.redirect(_router.rule_url('auth_ui@sign_in', rule_args={
@@ -112,7 +112,7 @@ class ProfileView(_routing.Controller):
     def exec(self) -> str:
         try:
             profile_owner = _auth.get_user(nickname=self.arg('nickname'))
-        except _auth.error.UserNotExist:
+        except _auth.error.UserNotFound:
             raise self.not_found()
 
         c_user = _auth.get_current_user()

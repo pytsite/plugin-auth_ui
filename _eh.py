@@ -22,7 +22,7 @@ def router_dispatch():
             session = _router.session()
             user = _auth.get_user(session['auth.login'])
             session.modified = True  # Update session's timestamp
-        except _auth.error.UserNotExist:
+        except _auth.error.UserNotFound:
             # User has been deleted, so delete session information about it
             del _router.session()['auth.login']
 
