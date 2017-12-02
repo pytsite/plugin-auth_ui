@@ -1,6 +1,6 @@
 {
   "name": "auth_ui",
-  "version": "1.0",
+  "version": "2.0",
   "description": {
     "en": "Auth UI",
     "ru": "Auth UI",
@@ -16,6 +16,11 @@
     "packages": [],
     "plugins": [
       "auth",
+      "assetman",
+      "form",
+      "hreflang",
+      "robots_txt",
+      "settings",
       "widget"
     ]
   }
