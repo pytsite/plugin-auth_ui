@@ -4,6 +4,12 @@
 ## Changelog
 
 
+### 2.2 (2017-12-13)
+
+- Support for PytSite-7.0.
+- Part of the code moved to the `auth_settings` plugin.
+
+
 ### 2.1 (2017-12-02)
 
 Support for last `auth` plugin update.

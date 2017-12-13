@@ -1,21 +1,23 @@
 """PytSite Auth UI Plugin
 """
-
-# Public API
-from ._controllers import AuthFilterController
-from ._api import base_path, register_driver, get_driver, get_drivers, sign_in_form, sign_in_url, sign_out_url
-from . import _widget as widget
-from ._driver import Driver
-
 __author__ = 'Alexander Shepetko'
 __email__ = 'a@shepetko.com'
 __license__ = 'MIT'
 
+from pytsite import plugman as _plugman
 
-def _init():
+if _plugman.is_installed(__name__):
+    # Public API
+    from ._controllers import AuthFilterController
+    from ._api import base_path, register_driver, get_driver, get_drivers, sign_in_form, sign_in_url, sign_out_url
+    from . import _widget as widget
+    from ._driver import Driver
+
+
+def plugin_load_uwsgi():
     from pytsite import router, lang, tpl
-    from plugins import assetman, auth, robots_txt, settings
-    from . import _controllers, _eh, _settings_form
+    from plugins import assetman, auth, robots_txt
+    from . import _controllers, _eh
 
     # Localization resources
     lang.register_package(__name__)
@@ -43,16 +45,10 @@ def _init():
 
     # Assets
     assetman.register_package(__name__)
-    assetman.t_less(__name__ + '@**')
-    assetman.t_js(__name__ + '@**')
+    assetman.t_less(__name__)
+    assetman.t_js(__name__)
     assetman.js_module('auth-ui-widget-follow', __name__ + '@js/widget-follow')
     assetman.js_module('auth-ui-widget-profile', __name__ + '@js/widget-profile')
 
     # robots.txt rules
     robots_txt.disallow(bp + '/')
-
-    # Settings form
-    settings.define('auth', _settings_form.Form, 'auth_ui@security', 'fa fa-user')
-
-
-_init()
