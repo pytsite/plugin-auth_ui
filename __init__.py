@@ -14,9 +14,19 @@ if _plugman.is_installed(__name__):
     from ._driver import Driver
 
 
+def plugin_load():
+    from plugins import assetman
+
+    assetman.register_package(__name__)
+    assetman.t_less(__name__)
+    assetman.t_js(__name__)
+    assetman.js_module('auth-ui-widget-follow', __name__ + '@js/widget-follow')
+    assetman.js_module('auth-ui-widget-profile', __name__ + '@js/widget-profile')
+
+
 def plugin_load_uwsgi():
     from pytsite import router, lang, tpl
-    from plugins import assetman, auth, robots_txt
+    from plugins import auth, robots_txt
     from . import _controllers, _eh
 
     # Localization resources
@@ -42,13 +52,6 @@ def plugin_load_uwsgi():
     tpl.register_global('auth_current_user', auth.get_current_user)
     tpl.register_global('auth_sign_in_url', sign_in_url)
     tpl.register_global('auth_sign_out_url', sign_out_url)
-
-    # Assets
-    assetman.register_package(__name__)
-    assetman.t_less(__name__)
-    assetman.t_js(__name__)
-    assetman.js_module('auth-ui-widget-follow', __name__ + '@js/widget-follow')
-    assetman.js_module('auth-ui-widget-profile', __name__ + '@js/widget-profile')
 
     # robots.txt rules
     robots_txt.disallow(bp + '/')
