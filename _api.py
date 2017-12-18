@@ -1,15 +1,15 @@
 """PytSite Auth UI Plugin API Functions
 """
+__author__ = 'Alexander Shepetko'
+__email__ = 'a@shepetko.com'
+__license__ = 'MIT'
+
 from typing import Dict as _Dict
 from collections import OrderedDict as _OrderedDict
 from pytsite import router as _router, lang as _lang, reg as _reg
 from plugins import form as _form
 from . import _error
 from ._driver import Driver as _Driver
-
-__author__ = 'Alexander Shepetko'
-__email__ = 'a@shepetko.com'
-__license__ = 'MIT'
 
 _drivers = _OrderedDict()  # type: _Dict[str, _Driver]
 
@@ -36,7 +36,10 @@ def get_driver(name: str = None) -> _Driver:
         raise _error.NoDriversRegistered()
 
     if name:
-        return _drivers[name]
+        try:
+            return _drivers[name]
+        except KeyError:
+            raise _error.DriverNotRegistered(name)
 
     else:
         d_names = list(_drivers.keys())

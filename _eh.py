@@ -1,13 +1,13 @@
 """PytSite Auth UI Plugin Events Handlers
 """
+__author__ = 'Alexander Shepetko'
+__email__ = 'a@shepetko.com'
+__license__ = 'MIT'
+
 from datetime import datetime as _datetime
 from pytsite import router as _router, lang as _lang, http as _http
 from plugins import auth as _auth, hreflang as _hreflang
 from . import _api
-
-__author__ = 'Alexander Shepetko'
-__email__ = 'a@shepetko.com'
-__license__ = 'MIT'
 
 
 def router_dispatch():

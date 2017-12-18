@@ -1,11 +1,11 @@
 """PytSite Auth UI Abstract Drivers
 """
-from abc import ABC as _ABC, abstractmethod as _abstractmethod
-from plugins import form as _form
-
 __author__ = 'Alexander Shepetko'
 __email__ = 'a@shepetko.com'
 __license__ = 'MIT'
+
+from abc import ABC as _ABC, abstractmethod as _abstractmethod
+from plugins import form as _form
 
 
 class Driver(_ABC):

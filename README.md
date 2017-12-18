@@ -4,6 +4,11 @@
 ## Changelog
 
 
+### 2.2.2 (2017-12-18)
+
+Text strings changed.
+
+
 ### 2.2.1 (2017-12-13)
 
 Init fixed.

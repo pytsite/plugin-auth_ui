@@ -1,15 +1,15 @@
 """PytSite Auth UI Plugin Controllers
 """
+__author__ = 'Alexander Shepetko'
+__email__ = 'a@shepetko.com'
+__license__ = 'MIT'
+
 from typing import Union as _Union, Optional as _Optional
 from werkzeug.utils import escape as _escape
 from pytsite import lang as _lang, http as _http, metatag as _metatag, tpl as _tpl, router as _router, \
     logger as _logger, routing as _routing
 from plugins import assetman as _assetman, auth as _auth
 from . import _api, _widget
-
-__author__ = 'Alexander Shepetko'
-__email__ = 'a@shepetko.com'
-__license__ = 'MIT'
 
 
 class AuthFilterController(_routing.Controller):
