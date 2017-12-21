@@ -14,14 +14,25 @@ if _plugman.is_installed(__name__):
     from ._driver import Driver
 
 
-def plugin_load():
+def _register_assetman_resources():
     from plugins import assetman
 
-    assetman.register_package(__name__)
-    assetman.t_less(__name__)
-    assetman.t_js(__name__)
-    assetman.js_module('auth-ui-widget-follow', __name__ + '@js/widget-follow')
-    assetman.js_module('auth-ui-widget-profile', __name__ + '@js/widget-profile')
+    if not assetman.is_package_registered(__name__):
+        assetman.register_package(__name__)
+        assetman.t_less(__name__)
+        assetman.t_js(__name__)
+        assetman.js_module('auth-ui-widget-follow', __name__ + '@js/widget-follow')
+        assetman.js_module('auth-ui-widget-profile', __name__ + '@js/widget-profile')
+
+    return assetman
+
+
+def plugin_install():
+    _register_assetman_resources().build(__name__)
+
+
+def plugin_load():
+    _register_assetman_resources()
 
 
 def plugin_load_uwsgi():

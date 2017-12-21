@@ -4,6 +4,11 @@
 ## Changelog
 
 
+### 2.2.3 (2017-12-18)
+
+Init refactored.
+
+
 ### 2.2.2 (2017-12-18)
 
 Text strings changed.

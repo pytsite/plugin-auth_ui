@@ -87,7 +87,7 @@ class SignInSubmit(_routing.Controller):
             }))
 
         except Exception as e:
-            _logger.error(str(e), exc_info=e)
+            _logger.error(e)
             _router.session().add_error_message(str(e))
             return self.redirect(_router.rule_url('auth_ui@sign_in', rule_args={
                 'driver': driver,
