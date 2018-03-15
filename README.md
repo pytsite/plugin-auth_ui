@@ -4,6 +4,11 @@
 ## Changelog
 
 
+### 2.3 (2018-03-15)
+
+Support for `widget-1.6`.
+
+
 ### 2.2.3 (2017-12-18)
 
 Init refactored.

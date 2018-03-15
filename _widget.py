@@ -31,7 +31,7 @@ class RolesCheckboxes(_widget.select.Checkboxes):
 
         super().__init__(uid, items=items, **kwargs)
 
-    def set_val(self, value: _Union[_List, _Tuple], **kwargs):
+    def set_val(self, value: _Union[_List, _Tuple]):
         """Set value of the widget.
         """
         if not isinstance(value, (list, tuple)):
@@ -46,7 +46,7 @@ class RolesCheckboxes(_widget.select.Checkboxes):
             else:
                 raise TypeError('List of roles or UIDs expected.')
 
-        super().set_val(clean_value, **kwargs)
+        super().set_val(clean_value)
 
 
 class UserSelect(_widget.select.Select):
@@ -63,7 +63,7 @@ class UserSelect(_widget.select.Select):
             for user in _auth.get_users({'status': 'active'}, sort_field='first_name'):
                 self._items.append((user.uid, '{} ({})'.format(user.full_name, user.login)))
 
-    def set_val(self, value, **kwargs):
+    def set_val(self, value):
         if isinstance(value, _auth.model.AbstractUser):
             value = value.uid
         elif isinstance(value, str):
@@ -72,7 +72,7 @@ class UserSelect(_widget.select.Select):
         elif value is not None:
             raise TypeError('User object, UID or None expected, got {}.'.format(value))
 
-        return super().set_val(value, **kwargs)
+        return super().set_val(value)
 
     def get_val(self, **kwargs) -> _auth.model.AbstractUser:
         value = super().get_val(**kwargs)

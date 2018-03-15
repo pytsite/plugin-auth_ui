@@ -1,6 +1,6 @@
 {
   "name": "auth_ui",
-  "version": "2.2.3",
+  "version": "2.3",
   "description": {
     "en": "Auth UI",
     "ru": "Auth UI",
@@ -20,7 +20,7 @@
       "form",
       "hreflang",
       "robots_txt",
-      "widget"
+      "widget>=1.6"
     ]
   }
 }
