@@ -4,6 +4,11 @@
 ## Changelog
 
 
+### 2.3.1 (2018-03-18)
+
+Form caching fixed.
+
+
 ### 2.3 (2018-03-15)
 
 Support for `widget-1.6`.

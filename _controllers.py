@@ -45,7 +45,7 @@ class SignIn(_routing.Controller):
 
         try:
             driver = self.arg('driver')
-            frm = _api.sign_in_form(driver, nocache=True)
+            frm = _api.sign_in_form(driver)
             args = {'driver': driver, 'form': frm}
 
             try:
