@@ -6,8 +6,7 @@ __license__ = 'MIT'
 
 # Public API
 from ._controllers import AuthFilterController
-from ._api import base_path, register_driver, get_driver, get_drivers, sign_in_form, sign_in_url, sign_out_url, \
-    user_profile_view_url, user_profile_edit_url
+from ._api import base_path, register_driver, get_driver, get_drivers, sign_in_form, sign_in_url, sign_out_url
 from . import _widget as widget
 from ._driver import Driver
 
