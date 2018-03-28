@@ -4,6 +4,14 @@
 ## Changelog
 
 
+### 2.4 (2018-03-28)
+
+- New API functions: `user_profile_view_url()`, `user_profile_edit_url`.
+- `widget.Profile` and `widget.Follow` removed.
+- Tpl globals removed in favour of using `plugins` global.
+- Profile view conroller refactored.
+
+
 ### 2.3.1 (2018-03-18)
 
 Form caching fixed.
