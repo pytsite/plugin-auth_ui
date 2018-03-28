@@ -39,9 +39,6 @@ def plugin_load_uwsgi():
     router.handle(_controllers.SignIn, bp + '/sign-in/<driver>', 'auth_ui@sign_in')
     router.handle(_controllers.SignInSubmit, bp + '/sign-in/<driver>/post', 'auth_ui@sign_in_submit', methods='POST')
     router.handle(_controllers.SignOut, bp + '/sign-out', 'auth_ui@sign_out')
-    router.handle(_controllers.ProfileView, bp + '/user/<nickname>', 'auth_ui@user_profile_view')
-    router.handle(_controllers.ProfileEdit, bp + '/user/<nickname>/edit', 'auth_ui@user_profile_edit',
-                  filters=AuthFilterController)
 
     # Router events
     router.on_dispatch(_eh.router_dispatch, -999, '*')

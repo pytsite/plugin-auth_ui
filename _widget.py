@@ -5,7 +5,7 @@ __email__ = 'a@shepetko.com'
 __license__ = 'MIT'
 
 from typing import Union as _Union, List as _List, Tuple as _Tuple
-from pytsite import lang as _lang, html as _html, tpl as _tpl
+from pytsite import lang as _lang
 from plugins import widget as _widget, auth as _auth
 
 

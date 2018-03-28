@@ -4,6 +4,12 @@
 ## Changelog
 
 
+### 2.5 (2018-03-28)
+
+- `user_profile_view_url()`, `user_profile_edit_url` removed.
+- Profile view and edit controllers removed.
+
+
 ### 2.4 (2018-03-28)
 
 - New API functions: `user_profile_view_url()`, `user_profile_edit_url`.
