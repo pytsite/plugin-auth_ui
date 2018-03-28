@@ -4,6 +4,11 @@
 ## Changelog
 
 
+### 2.5.1 (2018-03-28)
+
+Package init fixed.
+
+
 ### 2.5 (2018-03-28)
 
 - `user_profile_view_url()`, `user_profile_edit_url` removed.
