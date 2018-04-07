@@ -6,7 +6,7 @@ __license__ = 'MIT'
 
 from typing import Union as _Union, List as _List, Tuple as _Tuple
 from pytsite import lang as _lang
-from plugins import widget as _widget, auth as _auth
+from plugins import widget as _widget, auth as _auth, query as _query
 
 
 class RolesCheckboxes(_widget.select.Checkboxes):
@@ -17,7 +17,7 @@ class RolesCheckboxes(_widget.select.Checkboxes):
         """Init
         """
         items = []
-        for role in _auth.get_roles():
+        for role in _auth.find_roles():
             if role.name == 'anonymous':
                 continue
 
@@ -57,10 +57,10 @@ class UserSelect(_widget.select.Select):
         super().__init__(uid, **kwargs)
 
         c_user = _auth.get_current_user()
-        if not c_user.is_admin:
+        if not c_user.is_admin_or_dev:
             self._items.append((c_user.uid, '{} ({})'.format(c_user.full_name, c_user.login)))
         else:
-            for user in _auth.get_users({'status': 'active'}, sort_field='first_name'):
+            for user in _auth.find_users(_query.Query(_query.Eq('status', 'active')), [('first_name', 1)]):
                 self._items.append((user.uid, '{} ({})'.format(user.full_name, user.login)))
 
     def set_val(self, value):

@@ -32,7 +32,7 @@ def router_dispatch():
     if not user.is_anonymous:
         if user.status == 'active':
             # Disable page caching for signed in users
-            _router.set_no_cache(True)
+            _router.no_cache(True)
 
             # Update user's activity timestamp
             user.last_activity = _datetime.now()

@@ -35,8 +35,13 @@ def plugin_load_uwsgi():
 
     # Routes
     bp = base_path()
-    router.handle(_controllers.SignIn, bp + '/sign-in/<driver>', 'auth_ui@sign_in')
+    router.handle(_controllers.Form, bp + '/sign-in', 'auth_ui@sign_in_default')
+    router.handle(_controllers.Form, bp + '/sign-in/<driver>', 'auth_ui@sign_in')
+    router.handle(_controllers.Form, bp + '/sign-up', 'auth_ui@sign_up_default')
+    router.handle(_controllers.Form, bp + '/sign-up/<driver>', 'auth_ui@sign_up')
     router.handle(_controllers.SignInSubmit, bp + '/sign-in/<driver>/post', 'auth_ui@sign_in_submit', methods='POST')
+    router.handle(_controllers.SignUpSubmit, bp + '/sign-up/<driver>/post', 'auth_ui@sign_up_submit', methods='POST')
+    router.handle(_controllers.SignUpConfirm, bp + '/sign-up/confirm/<code>', 'auth_ui@sign_up_confirm')
     router.handle(_controllers.SignOut, bp + '/sign-out', 'auth_ui@sign_out')
 
     # Router events

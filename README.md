@@ -4,6 +4,13 @@
 ## Changelog
 
 
+### 2.6 (2018-04-07)
+
+- Sign up support added.
+- Support of `auth-2.1`.
+- Various little issues fixed.
+
+
 ### 2.5.1 (2018-03-28)
 
 Package init fixed.

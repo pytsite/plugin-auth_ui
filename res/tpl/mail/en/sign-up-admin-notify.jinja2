@@ -1,0 +1,14 @@
+<h1>Hello, {{ admin.full_name }}</h1>
+
+<p>
+    A new user {{ user.login }} just registered on the {{ t('app_name') }}.
+
+    {% if user.status != 'active' %}
+        Please check user's status and take corresponding actions if it's necessary.
+    {% endif %}
+</p>
+
+<p>
+    --<br>
+    Best wishes, {{ t('app_name') }}
+</p>

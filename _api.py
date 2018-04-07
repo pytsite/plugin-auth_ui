@@ -65,6 +65,7 @@ def sign_in_form(driver_name: str = None, **kwargs) -> _form.Form:
     driver = get_driver(driver_name)
 
     kwargs.update({
+        'uid': 'auth-ui-form',
         'name': kwargs.get('name', 'auth-ui-sign-in-' + driver.name),
         'css': kwargs.get('css', '') + ' auth-ui-sign-in driver-' + driver.name
     })
@@ -82,6 +83,34 @@ def sign_in_url(driver_name: str = None, add_query: dict = None, add_fragment: s
     """Get sign in URL
     """
     return _router.rule_url('auth_ui@sign_in', {
+        'driver': get_driver(driver_name).name,
+        '__redirect': _router.current_url(add_query=add_query, add_fragment=add_fragment)
+    })
+
+
+def sign_up_form(driver_name: str = None, **kwargs) -> _form.Form:
+    """Get a sign up form
+    """
+    driver = get_driver(driver_name)
+
+    kwargs.update({
+        'name': kwargs.get('name', 'auth-ui-sign-up-' + driver.name),
+        'css': kwargs.get('css', '') + ' auth-ui-sign-up driver-' + driver.name
+    })
+
+    form = driver.get_sign_up_form(**kwargs)
+    form.action = _router.rule_url('auth_ui@sign_up_submit', {'driver': driver.name})
+
+    if not form.title:
+        form.title = _lang.t('auth_ui@registration')
+
+    return form
+
+
+def sign_up_url(driver_name: str = None, add_query: dict = None, add_fragment: str = None) -> str:
+    """Get sign up URL
+    """
+    return _router.rule_url('auth_ui@sign_up', {
         'driver': get_driver(driver_name).name,
         '__redirect': _router.current_url(add_query=add_query, add_fragment=add_fragment)
     })

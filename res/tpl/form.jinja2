@@ -7,7 +7,7 @@
     {% block js_head_links %} {{ js_head_links() }} {% endblock %}
 </head>
 
-<body id="auth-ui-page-sign-in" class="auth-ui-page sign-in driver-{{ driver }}">
+<body id="auth-ui-page" class="auth-ui-page {{ form_type }} driver-{{ driver }}">
 
 {% block messages %}
     <div id="messages" class="container">
