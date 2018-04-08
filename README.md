@@ -4,6 +4,11 @@
 ## Changelog
 
 
+### 2.6.1 (2018-04-08)
+
+Form initialization fixed.
+
+
 ### 2.6 (2018-04-07)
 
 - Sign up support added.

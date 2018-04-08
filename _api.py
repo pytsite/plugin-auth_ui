@@ -65,9 +65,8 @@ def sign_in_form(driver_name: str = None, **kwargs) -> _form.Form:
     driver = get_driver(driver_name)
 
     kwargs.update({
-        'uid': 'auth-ui-form',
         'name': kwargs.get('name', 'auth-ui-sign-in-' + driver.name),
-        'css': kwargs.get('css', '') + ' auth-ui-sign-in driver-' + driver.name
+        'css': kwargs.get('css', '') + ' auth-ui-form auth-ui-sign-in driver-' + driver.name
     })
 
     form = driver.get_sign_in_form(**kwargs)
