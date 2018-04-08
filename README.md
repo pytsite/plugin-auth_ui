@@ -4,6 +4,11 @@
 ## Changelog
 
 
+### 2.6.2 (2018-04-08)
+
+Sign up form's CSS fixed.
+
+
 ### 2.6.1 (2018-04-08)
 
 Form initialization fixed.

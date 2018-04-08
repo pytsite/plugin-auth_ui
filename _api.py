@@ -94,7 +94,7 @@ def sign_up_form(driver_name: str = None, **kwargs) -> _form.Form:
 
     kwargs.update({
         'name': kwargs.get('name', 'auth-ui-sign-up-' + driver.name),
-        'css': kwargs.get('css', '') + ' auth-ui-sign-up driver-' + driver.name
+        'css': kwargs.get('css', '') + ' auth-ui-form auth-ui-sign-up driver-' + driver.name
     })
 
     form = driver.get_sign_up_form(**kwargs)
