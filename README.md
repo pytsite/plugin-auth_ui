@@ -4,6 +4,11 @@
 ## Changelog
 
 
+### 2.6.3 (2018-04-09)
+
+Missing mail templates fixed.
+
+
 ### 2.6.2 (2018-04-08)
 
 Sign up form's CSS fixed.

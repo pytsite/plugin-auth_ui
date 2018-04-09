@@ -117,12 +117,12 @@ class SignUpSubmit(_routing.Controller):
             user = _auth.sign_up(driver_name, _router.request().inp)
 
             # Send a confirmation email to the user
-            if not user.is_confirmed:
-                msg = _tpl.render('auth_ui@mail/{}/sign-up-confirm'.format(_lang.get_current()), {
-                    'user': user,
-                    'confirm_url': _router.rule_url('auth_ui@sign_up_confirm', {'code': user.confirmation_hash})
-                })
-                _mail.Message(user.login, _lang.t('auth_ui@confirm_registration'), msg).send()
+            msg = _tpl.render('auth_ui@mail/{}/sign-up'.format(_lang.get_current()), {
+                'user': user,
+                'confirm_url': _router.rule_url('auth_ui@sign_up_confirm',
+                                                {'code': user.confirmation_hash}) if not user.is_confirmed else None
+            })
+            _mail.Message(user.login, _lang.t('auth_ui@confirm_registration'), msg).send()
 
             if _auth.is_sign_up_admins_notification_enabled():
                 for admin in _auth.get_admin_users():

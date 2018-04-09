@@ -1,0 +1,15 @@
+<h1>Hello, {{ user.full_name }}</h1>
+
+<p>
+    Thank you for your registration on the {{ t('app_name') }}.
+
+    {% if confirm_url %}
+        In order to finish your registration, please confirm your email by visiting following URL:
+        <a href="{{ confirm_url }}">{{ confirm_url }}</a>.
+    {% endif %}
+</p>
+
+<p>
+    --<br>
+    Best wishes, {{ t('app_name') }}
+</p>
