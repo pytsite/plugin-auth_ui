@@ -1,6 +1,6 @@
 {
   "name": "auth_ui",
-  "version": "2.6.3",
+  "version": "2.7",
   "description": {
     "en": "Auth UI",
     "ru": "Auth UI",
@@ -15,7 +15,7 @@
   "requires": {
     "pytsite": ">=7.14",
     "plugins": [
-      "auth>=2.1",
+      "auth>=2.5",
       "assetman",
       "form",
       "hreflang",

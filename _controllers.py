@@ -85,17 +85,27 @@ class SignInSubmit(_routing.Controller):
         try:
             _auth.sign_in(driver_name, _router.request().inp)
 
-            return self.redirect(redirect)
+        except _auth.error.UserNotActive as e:
+            _logger.warn(e)
+            _router.session().add_warning_message(str(e))
+
+            redirect = self.redirect(_router.rule_url('auth_ui@sign_in', rule_args={
+                'driver': driver_name,
+                '__redirect': redirect,
+                'login': _router.request().inp.get('login'),
+            }))
 
         except Exception as e:
             _logger.error(e)
             _router.session().add_error_message(_lang.t('auth_ui@authentication_error'))
 
-            return self.redirect(_router.rule_url('auth_ui@sign_in', rule_args={
+            redirect = self.redirect(_router.rule_url('auth_ui@sign_in', rule_args={
                 'driver': driver_name,
                 '__redirect': redirect,
                 'login': _router.request().inp.get('login'),
             }))
+
+        return self.redirect(redirect)
 
 
 class SignUpSubmit(_routing.Controller):
