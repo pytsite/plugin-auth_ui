@@ -33,7 +33,7 @@ class Form(_routing.Controller):
     def exec(self) -> _Union[str, _http.response.Redirect]:
         # Redirect user if it already authenticated
         if not _auth.get_current_user().is_anonymous:
-            return self.redirect(_router.request().inp.get('__redirect', _router.base_url()))
+            return self.redirect(self.arg('__redirect', _router.base_url()))
 
         rule_name = self.arg('_pytsite_router_rule_name')
 
@@ -43,7 +43,13 @@ class Form(_routing.Controller):
         try:
             form_type = 'sign-in' if 'sign_in' in rule_name else 'sign-up'
             driver_name = self.arg('driver', _api.get_driver().name)
-            frm = _api.sign_in_form(driver_name) if form_type == 'sign-in' else _api.sign_up_form(driver_name)
+
+            if form_type == 'sign-in':
+                frm = _api.sign_in_form(driver_name)
+                frm.redirect = self.arg('__redirect')
+            else:
+                frm = _api.sign_up_form(driver_name)
+                frm.redirect = _api.sign_in_url(driver_name, False)
 
             _metatag.t_set('title', frm.title)
 
@@ -71,10 +77,7 @@ class SignInSubmit(_routing.Controller):
     """
 
     def exec(self):
-        redirect = _router.request().inp.pop('__redirect', _router.base_url())
-
-        if isinstance(redirect, list):
-            redirect = redirect.pop()
+        redirect = self.arg('__redirect', _router.base_url())
 
         # Redirect user if it already authenticated
         if not _auth.get_current_user().is_anonymous:
@@ -83,7 +86,7 @@ class SignInSubmit(_routing.Controller):
         driver_name = self.arg('driver')
 
         try:
-            _auth.sign_in(driver_name, _router.request().inp)
+            _auth.sign_in(driver_name, self.args)
 
         except _auth.error.UserNotActive as e:
             _logger.warn(e)
@@ -91,8 +94,8 @@ class SignInSubmit(_routing.Controller):
 
             redirect = _router.rule_url('auth_ui@sign_in', rule_args={
                 'driver': driver_name,
+                'login': self.arg('login'),
                 '__redirect': redirect,
-                'login': _router.request().inp.get('login'),
             })
 
         except Exception as e:
@@ -101,8 +104,8 @@ class SignInSubmit(_routing.Controller):
 
             redirect = _router.rule_url('auth_ui@sign_in', rule_args={
                 'driver': driver_name,
+                'login': self.arg('login'),
                 '__redirect': redirect,
-                'login': _router.request().inp.get('login'),
             })
 
         return self.redirect(redirect)
@@ -114,17 +117,17 @@ class SignUpSubmit(_routing.Controller):
 
     def exec(self):
         # Default redirect
-        redirect = _router.request().inp.pop('__redirect', _router.base_url())
+        redirect_url = self.args.pop('__redirect', _router.base_url())
 
         # Redirect user if it already authenticated
         if not _auth.get_current_user().is_anonymous:
-            return self.redirect(redirect)
+            return self.redirect(redirect_url)
 
         driver_name = self.arg('driver')
 
         try:
             # Register a new user
-            user = _auth.sign_up(driver_name, _router.request().inp)
+            user = _auth.sign_up(driver_name, self.args)
 
             # Send a confirmation email to the user
             msg = _tpl.render('auth_ui@mail/{}/sign-up'.format(_lang.get_current()), {
@@ -144,7 +147,7 @@ class SignUpSubmit(_routing.Controller):
 
             _router.session().add_success_message(_lang.t('auth_ui@registration_form_success'))
 
-            return self.redirect(redirect)
+            return self.redirect(redirect_url)
 
         except Exception as e:
             _logger.error(e)
@@ -152,7 +155,7 @@ class SignUpSubmit(_routing.Controller):
 
             return self.redirect(_router.rule_url('auth_ui@sign_up', rule_args={
                 'driver': driver_name,
-                '__redirect': redirect,
+                '__redirect': redirect_url,
             }))
 
 
@@ -185,4 +188,4 @@ class SignOut(_routing.Controller):
     def exec(self):
         _auth.sign_out(_auth.get_current_user())
 
-        return self.redirect(_router.request().inp.get('__redirect', _router.base_url()))
+        return self.redirect(self.arg('__redirect', _router.base_url()))

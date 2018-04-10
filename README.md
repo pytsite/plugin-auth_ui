@@ -4,6 +4,11 @@
 ## Changelog
 
 
+### 2.8.1 (2018-04-10)
+
+Forms processing issues fixed.
+
+
 ### 2.8 (2018-04-10)
 
 Support of `auth-2.6`.

@@ -1,6 +1,6 @@
 {
   "name": "auth_ui",
-  "version": "2.8",
+  "version": "2.8.1",
   "description": {
     "en": "Auth UI",
     "ru": "Auth UI",
@@ -17,7 +17,7 @@
     "plugins": [
       "auth>=2.6",
       "assetman",
-      "form",
+      "form>=2.4.2",
       "hreflang",
       "query>=1.0",
       "robots_txt",
