@@ -49,7 +49,7 @@ class Form(_routing.Controller):
                 frm.redirect = self.arg('__redirect')
             else:
                 frm = _api.sign_up_form(driver_name)
-                frm.redirect = _api.sign_in_url(driver_name, False)
+                frm.redirect = _api.sign_in_url(driver_name)
 
             _metatag.t_set('title', frm.title)
 

@@ -4,7 +4,7 @@
     Status of your account has been changed to "{{ t('auth@status_' ~ status) }}".
 
     {% if status == 'active' %}
-        {% set sign_in_url = plugins.auth_ui.sign_in_url(redirect=False) %}
+        {% set sign_in_url = plugins.auth_ui.sign_in_url() %}
         Now you can login to the {{ t('app_name') }} using following URL:
         <a href="{{ sign_in_url }}">{{ sign_in_url }}</a>.
     {% endif %}

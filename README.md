@@ -4,6 +4,11 @@
 ## Changelog
 
 
+### 2.8.2 (2018-04-10)
+
+`sign_in_url()` fixed.
+
+
 ### 2.8.1 (2018-04-10)
 
 Forms processing issues fixed.

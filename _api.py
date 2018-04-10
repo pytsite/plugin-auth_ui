@@ -78,7 +78,7 @@ def sign_in_form(driver_name: str = None, **kwargs) -> _form.Form:
     return form
 
 
-def sign_in_url(driver_name: str = None, redirect: _Union[str, bool] = None, add_query: dict = None,
+def sign_in_url(driver_name: str = None, redirect: _Union[str, bool] = False, add_query: dict = None,
                 add_fragment: str = None) -> str:
     """Get sign in URL
     """
@@ -86,12 +86,10 @@ def sign_in_url(driver_name: str = None, redirect: _Union[str, bool] = None, add
         'driver': get_driver(driver_name).name,
     }
 
-    if redirect is None:
-        rule_args['__redirect'] = _router.current_url(add_query=add_query, add_fragment=add_fragment)
-    elif isinstance(redirect, str):
+    if redirect:
         rule_args['__redirect'] = redirect
 
-    return _router.rule_url('auth_ui@sign_in', rule_args)
+    return _router.rule_url('auth_ui@sign_in', rule_args, query=add_query, fragment=add_fragment)
 
 
 def sign_up_form(driver_name: str = None, **kwargs) -> _form.Form:
