@@ -27,11 +27,12 @@ def plugin_install():
 
 def plugin_load_uwsgi():
     from pytsite import router, lang, tpl
-    from plugins import robots_txt
+    from plugins import robots_txt, auth
     from . import _controllers, _eh
 
-    # Localization resources
+    # Resource packages
     lang.register_package(__name__)
+    tpl.register_package(__name__)
 
     # Routes
     bp = base_path()
@@ -50,8 +51,8 @@ def plugin_load_uwsgi():
     router.on_response(_eh.router_response, -999, '*')
     router.on_xhr_response(_eh.router_response, -999, '*')
 
-    # Template engine globals
-    tpl.register_package(__name__, alias='auth_ui')
+    # Auth events
+    auth.on_user_status_change(_eh.auth_user_status_change)
 
     # robots.txt rules
     robots_txt.disallow(bp + '/')

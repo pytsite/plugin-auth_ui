@@ -6,3 +6,4 @@ confirm_registration: 'Пожалуйста, подтвердите регист
 registration_confirm_success: 'Ваш email успешно подтверждён. Спасибо!'
 registration_admin_notify: 'Новый пользователь на {:app_name}'
 registration_form_success: 'Учётная запись успешно создана. Дополнительная информация отправлена вам на email.'
+user_status_change_notify: 'Статус вашей учётной записи был изменён'

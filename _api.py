@@ -4,7 +4,7 @@ __author__ = 'Alexander Shepetko'
 __email__ = 'a@shepetko.com'
 __license__ = 'MIT'
 
-from typing import Dict as _Dict
+from typing import Dict as _Dict, Union as _Union
 from collections import OrderedDict as _OrderedDict
 from pytsite import router as _router, lang as _lang, reg as _reg
 from plugins import form as _form
@@ -78,13 +78,20 @@ def sign_in_form(driver_name: str = None, **kwargs) -> _form.Form:
     return form
 
 
-def sign_in_url(driver_name: str = None, add_query: dict = None, add_fragment: str = None) -> str:
+def sign_in_url(driver_name: str = None, redirect: _Union[str, bool] = None, add_query: dict = None,
+                add_fragment: str = None) -> str:
     """Get sign in URL
     """
-    return _router.rule_url('auth_ui@sign_in', {
+    rule_args = {
         'driver': get_driver(driver_name).name,
-        '__redirect': _router.current_url(add_query=add_query, add_fragment=add_fragment)
-    })
+    }
+
+    if redirect is None:
+        rule_args['__redirect'] = _router.current_url(add_query=add_query, add_fragment=add_fragment)
+    elif isinstance(redirect, str):
+        rule_args['__redirect'] = redirect
+
+    return _router.rule_url('auth_ui@sign_in', rule_args)
 
 
 def sign_up_form(driver_name: str = None, **kwargs) -> _form.Form:

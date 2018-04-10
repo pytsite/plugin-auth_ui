@@ -4,6 +4,11 @@
 ## Changelog
 
 
+### 2.8 (2018-04-10)
+
+Support of `auth-2.6`.
+
+
 ### 2.7 (2018-04-09)
 
 Support of `auth-2.5`.

@@ -89,21 +89,21 @@ class SignInSubmit(_routing.Controller):
             _logger.warn(e)
             _router.session().add_warning_message(str(e))
 
-            redirect = self.redirect(_router.rule_url('auth_ui@sign_in', rule_args={
+            redirect = _router.rule_url('auth_ui@sign_in', rule_args={
                 'driver': driver_name,
                 '__redirect': redirect,
                 'login': _router.request().inp.get('login'),
-            }))
+            })
 
         except Exception as e:
             _logger.error(e)
             _router.session().add_error_message(_lang.t('auth_ui@authentication_error'))
 
-            redirect = self.redirect(_router.rule_url('auth_ui@sign_in', rule_args={
+            redirect = _router.rule_url('auth_ui@sign_in', rule_args={
                 'driver': driver_name,
                 '__redirect': redirect,
                 'login': _router.request().inp.get('login'),
-            }))
+            })
 
         return self.redirect(redirect)
 

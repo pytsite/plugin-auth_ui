@@ -1,0 +1,16 @@
+<h1>Hello, {{ user.full_name }}</h1>
+
+<p>
+    Статус вашей учётной записи изменён на "{{ t('auth@status_' ~ status) }}".
+
+    {% if status == 'active' %}
+        {% set sign_in_url = plugins.auth_ui.sign_in_url(redirect=False) %}
+        Теперь вы можете авторизоваться на {{ t('app_name') }}, используя следующий URL:
+        <a href="{{ sign_in_url }}">{{ sign_in_url }}</a>.
+    {% endif %}
+</p>
+
+<p>
+    --<br>
+    С наилучшими пожеланиями, {{ t('app_name') }}
+</p>

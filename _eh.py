@@ -5,7 +5,7 @@ __email__ = 'a@shepetko.com'
 __license__ = 'MIT'
 
 from datetime import datetime as _datetime
-from pytsite import router as _router, lang as _lang, http as _http
+from pytsite import router as _router, lang as _lang, http as _http, mail as _mail, tpl as _tpl
 from plugins import auth as _auth, hreflang as _hreflang
 from . import _api
 
@@ -58,3 +58,12 @@ def router_response(response: _http.response.Response):
             pass
 
         response.delete_cookie('PYTSITE_SESSION')
+
+
+def auth_user_status_change(user: _auth.AbstractUser, status: str):
+    if _auth.is_user_status_change_notification_enabled():
+        msg = _tpl.render('auth_ui@mail/{}/user-status-change'.format(_lang.get_current()), {
+            'user': user,
+            'status': status,
+        })
+        _mail.Message(user.login, _lang.t('auth_ui@user_status_change_notify'), msg).send()
