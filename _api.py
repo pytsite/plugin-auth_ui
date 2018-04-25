@@ -8,7 +8,7 @@ from typing import Dict as _Dict, Union as _Union
 from collections import OrderedDict as _OrderedDict
 from pytsite import router as _router, lang as _lang, reg as _reg
 from plugins import form as _form
-from . import _error
+from . import _error, _frm
 from ._driver import Driver as _Driver
 
 _drivers = _OrderedDict()  # type: _Dict[str, _Driver]

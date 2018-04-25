@@ -4,6 +4,15 @@
 ## Changelog
 
 
+### 3.0 (2018-04-25)
+
+- Support of `auth-3.0`.
+- New routes: `auth_ui@user_profile_view` and
+  `auth_ui@user_profile_modify`.
+- New module: `form`.
+
+
+
 ### 2.8.3 (2018-04-10)
 
 Typo fixed.

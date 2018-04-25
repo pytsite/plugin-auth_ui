@@ -6,8 +6,8 @@ __license__ = 'MIT'
 
 # Public API
 from ._controllers import AuthFilterController
+from . import _widget as widget, _frm as form
 from ._api import base_path, register_driver, get_driver, get_drivers, sign_in_form, sign_in_url, sign_out_url
-from . import _widget as widget
 from ._driver import Driver
 
 
@@ -27,7 +27,7 @@ def plugin_install():
 
 def plugin_load_uwsgi():
     from pytsite import router, lang, tpl
-    from plugins import robots_txt, auth
+    from plugins import robots_txt, auth, admin
     from . import _controllers, _eh
 
     # Resource packages
@@ -36,14 +36,16 @@ def plugin_load_uwsgi():
 
     # Routes
     bp = base_path()
-    router.handle(_controllers.Form, bp + '/sign-in', 'auth_ui@sign_in_default')
-    router.handle(_controllers.Form, bp + '/sign-in/<driver>', 'auth_ui@sign_in')
-    router.handle(_controllers.Form, bp + '/sign-up', 'auth_ui@sign_up_default')
-    router.handle(_controllers.Form, bp + '/sign-up/<driver>', 'auth_ui@sign_up')
+    router.handle(_controllers.SignInUpForm, bp + '/sign-in', 'auth_ui@sign_in_default')
+    router.handle(_controllers.SignInUpForm, bp + '/sign-in/<driver>', 'auth_ui@sign_in')
+    router.handle(_controllers.SignInUpForm, bp + '/sign-up', 'auth_ui@sign_up_default')
+    router.handle(_controllers.SignInUpForm, bp + '/sign-up/<driver>', 'auth_ui@sign_up')
     router.handle(_controllers.SignInSubmit, bp + '/sign-in/<driver>/post', 'auth_ui@sign_in_submit', methods='POST')
     router.handle(_controllers.SignUpSubmit, bp + '/sign-up/<driver>/post', 'auth_ui@sign_up_submit', methods='POST')
     router.handle(_controllers.SignUpConfirm, bp + '/sign-up/confirm/<code>', 'auth_ui@sign_up_confirm')
     router.handle(_controllers.SignOut, bp + '/sign-out', 'auth_ui@sign_out')
+    router.handle(_controllers.UserProfileView, bp + '/user/<nickname>', 'auth_ui@user_profile_view')
+    router.handle(_controllers.UserProfileModify, bp + '/user/<nickname>/edit', 'auth_ui@user_profile_modify')
 
     # Router events
     router.on_dispatch(_eh.router_dispatch, -999, '*')

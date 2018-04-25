@@ -5,7 +5,7 @@ __email__ = 'a@shepetko.com'
 __license__ = 'MIT'
 
 from typing import Union as _Union, List as _List, Tuple as _Tuple
-from pytsite import lang as _lang
+from pytsite import lang as _lang, router as _router
 from plugins import widget as _widget, auth as _auth, query as _query
 
 
@@ -35,7 +35,7 @@ class RolesCheckboxes(_widget.select.Checkboxes):
         """Set value of the widget.
         """
         if not isinstance(value, (list, tuple)):
-            raise TypeError('List or tuple expected.')
+            raise TypeError('List or tuple expected')
 
         clean_value = []
         for role in value:
@@ -57,7 +57,7 @@ class UserSelect(_widget.select.Select):
         super().__init__(uid, **kwargs)
 
         c_user = _auth.get_current_user()
-        if not c_user.is_admin_or_dev:
+        if not c_user.is_admin:
             self._items.append((c_user.uid, '{} ({})'.format(c_user.full_name, c_user.login)))
         else:
             for user in _auth.find_users(_query.Query(_query.Eq('status', 'active')), [('first_name', 1)]):

@@ -7,8 +7,8 @@ __license__ = 'MIT'
 from typing import Union as _Union, Optional as _Optional
 from pytsite import lang as _lang, http as _http, metatag as _metatag, tpl as _tpl, router as _router, \
     logger as _logger, routing as _routing, util as _util, mail as _mail
-from plugins import assetman as _assetman, auth as _auth, query as _query
-from . import _api
+from plugins import assetman as _assetman, auth as _auth, query as _query, admin as _admin
+from . import _api, _frm
 
 
 class AuthFilterController(_routing.Controller):
@@ -29,7 +29,7 @@ class AuthFilterController(_routing.Controller):
         return self.redirect(_router.rule_url('auth_ui@sign_in', inp))
 
 
-class Form(_routing.Controller):
+class SignInUpForm(_routing.Controller):
     def exec(self) -> _Union[str, _http.response.Redirect]:
         # Redirect user if it already authenticated
         if not _auth.get_current_user().is_anonymous:
@@ -44,6 +44,7 @@ class Form(_routing.Controller):
             form_type = 'sign-in' if 'sign_in' in rule_name else 'sign-up'
             driver_name = self.arg('driver', _api.get_driver().name)
 
+            # Retrieve form from UI driver
             if form_type == 'sign-in':
                 frm = _api.sign_in_form(driver_name)
                 frm.redirect = self.arg('__redirect')
@@ -169,12 +170,14 @@ class SignUpConfirm(_routing.Controller):
         except StopIteration:
             raise self.not_found()
 
-        _auth.switch_user_to_system()
-        user.confirmation_hash = None
-        if user.status == 'waiting':
-            user.status = _auth.get_new_user_status()
-        user.save()
-        _auth.restore_user()
+        try:
+            _auth.switch_user_to_system()
+            user.confirmation_hash = None
+            if user.status == 'waiting':
+                user.status = _auth.get_new_user_status()
+            user.save()
+        finally:
+            _auth.restore_user()
 
         _router.session().add_success_message(_lang.t('auth_ui@registration_confirm_success'))
 
@@ -189,3 +192,54 @@ class SignOut(_routing.Controller):
         _auth.sign_out(_auth.get_current_user())
 
         return self.redirect(self.arg('__redirect', _router.base_url()))
+
+
+class UserProfileView(_routing.Controller):
+    """User Profile View
+    """
+
+    def __init__(self):
+        super().__init__()
+
+        self.args.add_validation('nickname', _auth.user_nickname_rule)
+
+    def exec(self) -> str:
+        try:
+            user = _auth.get_user(nickname=self.arg('nickname'))
+        except _auth.error.UserNotFound:
+            raise self.not_found()
+
+        if not user.is_active:
+            raise self.not_found()
+
+        c_user = _auth.get_current_user()
+        if not user.is_public and not (c_user == user or c_user.is_admin):
+            raise self.not_found()
+
+        self.args['user'] = user
+
+        try:
+            return _router.call('auth_ui_user_profile_view', self.args)
+        except _routing.error.RuleNotFound:
+            return _tpl.render('auth_ui/user_profile_view', self.args)
+
+
+class UserProfileModify(_routing.Controller):
+    """User Profile Edit Form
+    """
+
+    def __init__(self):
+        super().__init__()
+
+        self.args.add_validation('nickname', _auth.user_nickname_rule)
+
+    def exec(self) -> str:
+        try:
+            self.args['form'] = _frm.User(user_uid=_auth.get_user(nickname=self.arg('nickname')).uid)
+        except _auth.error.UserNotFound:
+            raise self.not_found()
+
+        try:
+            return _router.call('auth_ui_user_profile_modify', self.args)
+        except _routing.error.RuleNotFound:
+            return _tpl.render('auth_ui/user_profile_modify', self.args)
