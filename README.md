@@ -4,6 +4,12 @@
 ## Changelog
 
 
+### 3.1 (2018-04-25)
+
+- Meta titles added to profile view and edit controllers.
+- Translation issue fixed.
+
+
 ### 3.0 (2018-04-25)
 
 - Support of `auth-3.0`.

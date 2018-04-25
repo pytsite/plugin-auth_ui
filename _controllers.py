@@ -5,9 +5,9 @@ __email__ = 'a@shepetko.com'
 __license__ = 'MIT'
 
 from typing import Union as _Union, Optional as _Optional
-from pytsite import lang as _lang, http as _http, metatag as _metatag, tpl as _tpl, router as _router, \
-    logger as _logger, routing as _routing, util as _util, mail as _mail
-from plugins import assetman as _assetman, auth as _auth, query as _query, admin as _admin
+from pytsite import lang as _lang, http as _http, metatag as _metatag, tpl as _tpl, router as _router, mail as _mail, \
+    logger as _logger, routing as _routing, util as _util
+from plugins import assetman as _assetman, auth as _auth, query as _query
 from . import _api, _frm
 
 
@@ -217,6 +217,7 @@ class UserProfileView(_routing.Controller):
             raise self.not_found()
 
         self.args['user'] = user
+        _metatag.t_set('title', _lang.t('auth_ui@profile_view_title', {'name': user.full_name}))
 
         try:
             return _router.call('auth_ui_user_profile_view', self.args)
@@ -238,6 +239,8 @@ class UserProfileModify(_routing.Controller):
             self.args['form'] = _frm.User(user_uid=_auth.get_user(nickname=self.arg('nickname')).uid)
         except _auth.error.UserNotFound:
             raise self.not_found()
+
+        _metatag.t_set('title', _lang.t('auth_ui@profile_edit_title'))
 
         try:
             return _router.call('auth_ui_user_profile_modify', self.args)
