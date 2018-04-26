@@ -4,6 +4,11 @@
 ## Changelog
 
 
+### 3.1.1 (2018-04-26)
+
+Convenient CSS classes added to forms.
+
+
 ### 3.1 (2018-04-25)
 
 - Meta titles added to profile view and edit controllers.

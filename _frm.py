@@ -17,6 +17,8 @@ class Role(_form.Form):
         if not _auth.get_current_user().is_admin:
             raise _errors.ForbidOperation()
 
+        self.css += ' auth-ui-form-role'
+
     def _on_setup_widgets(self):
         role_uid = self.attr('role_uid')
         role = _auth.get_role(uid=role_uid) if role_uid != '0' else None
@@ -106,6 +108,7 @@ class User(_form.Form):
         elif not c_user.is_admin:
             raise _errors.ForbidOperation()
 
+        self.css += ' auth-ui-form-user'
         self.area_footer_css += ' text-center'
 
     def _on_setup_widgets(self):
