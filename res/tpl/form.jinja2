@@ -36,7 +36,9 @@
     <div id="page" class="container">
         <div class="row">
             <div class="col col-xs-12">
-                {{ form }}
+                {% block form %}
+                    {{ form }}
+                {% endblock %}
             </div>
         </div>
     </div>

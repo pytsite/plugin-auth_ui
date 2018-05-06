@@ -30,7 +30,7 @@ def router_dispatch():
     _auth.switch_user(user)
 
     if not user.is_anonymous:
-        if user.status == 'active':
+        if user.status == _auth.USER_STATUS_ACTIVE:
             # Disable page caching for signed in users
             _router.no_cache(True)
 
@@ -49,7 +49,7 @@ def router_dispatch():
                 _hreflang.add(lng, _router.url(base_path, lang=lng))
 
 
-def router_response(response: _http.response.Response):
+def router_response(response: _http.Response):
     # If user signed out, but session cookie is still alive
     if 'PYTSITE_SESSION' in _router.request().cookies and _auth.get_current_user().is_anonymous:
         try:

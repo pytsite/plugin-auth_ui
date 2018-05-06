@@ -4,6 +4,12 @@
 ## Changelog
 
 
+### 3.2 (2018-05-06)
+
+- Support of PytSite-7.17, `auth-3.1`, `form-4.0`.
+- New `Driver`'s abstract method added: `get_restore_account_form()`.
+
+
 ### 3.1.1 (2018-04-26)
 
 Convenient CSS classes added to forms.

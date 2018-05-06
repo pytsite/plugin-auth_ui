@@ -15,7 +15,7 @@ class AuthFilterController(_routing.Controller):
     """Authorization Filter
     """
 
-    def exec(self) -> _Optional[_http.response.Redirect]:
+    def exec(self) -> _Optional[_http.RedirectResponse]:
         if not _auth.get_current_user().is_anonymous:
             return
 
@@ -29,48 +29,58 @@ class AuthFilterController(_routing.Controller):
         return self.redirect(_router.rule_url('auth_ui@sign_in', inp))
 
 
-class SignInUpForm(_routing.Controller):
-    def exec(self) -> _Union[str, _http.response.Redirect]:
-        # Redirect user if it already authenticated
+class Form(_routing.Controller):
+    def exec(self) -> _Union[str, _http.RedirectResponse]:
+        # Redirect to the base URL if user is authenticated
         if not _auth.get_current_user().is_anonymous:
             return self.redirect(self.arg('__redirect', _router.base_url()))
 
-        rule_name = self.arg('_pytsite_router_rule_name')
-
-        if 'sign_up' in rule_name and not _auth.is_sign_up_enabled():
-            raise self.not_found()
-
+        # Determine driver's name from argument or get default
         try:
-            form_type = 'sign-in' if 'sign_in' in rule_name else 'sign-up'
             driver_name = self.arg('driver', _api.get_driver().name)
-
-            # Retrieve form from UI driver
-            if form_type == 'sign-in':
-                frm = _api.sign_in_form(driver_name)
-                frm.redirect = self.arg('__redirect')
-            else:
-                frm = _api.sign_up_form(driver_name)
-                frm.redirect = _api.sign_in_url(driver_name)
-
-            _metatag.t_set('title', frm.title)
-
-            tpl_args = {
-                'driver': driver_name,
-                'form_type': form_type,
-                'form': frm,
-            }
-
-            # Try to render tpl provided by application
-            try:
-                return _tpl.render('auth_ui/{}'.format(form_type), tpl_args)
-
-            # Render plugin's built-in tpl
-            except _tpl.error.TemplateNotFound:
-                _assetman.preload('auth_ui@css/form.css')
-                return _tpl.render('auth_ui@form', tpl_args)
-
         except _auth.error.DriverNotRegistered:
             raise self.not_found()
+
+        rule_name = self.arg('_pytsite_router_rule_name')
+        if 'sign_in' in rule_name:
+            form_type = 'sign-in'
+            form = _api.sign_in_form(self.request, driver_name)
+
+        elif 'sign_up' in rule_name:
+            # Check if sign up is enabled
+            if not _auth.is_sign_up_enabled():
+                raise self.not_found()
+
+            form_type = 'sign-up'
+            form = _api.sign_up_form(self.request, driver_name)
+
+        elif 'restore_account' in rule_name:
+            form_type = 'restore-account'
+            form = _api.restore_account_form(self.request, driver_name)
+            form.redirect = _router.base_url()
+
+        else:
+            raise ValueError('Unsupported form type')
+
+        if not form.redirect:
+            form.redirect = _router.base_url()
+
+        _metatag.t_set('title', form.title)
+
+        tpl_args = {
+            'driver': driver_name,
+            'form_type': form_type,
+            'form': form,
+        }
+
+        # Try to render tpl provided by application
+        try:
+            return _tpl.render('auth_ui/form', tpl_args)
+
+        # Render plugin's built-in tpl
+        except _tpl.error.TemplateNotFound:
+            _assetman.preload('auth_ui@css/form.css')
+            return _tpl.render('auth_ui@form', tpl_args)
 
 
 class SignInSubmit(_routing.Controller):
@@ -173,7 +183,7 @@ class SignUpConfirm(_routing.Controller):
         try:
             _auth.switch_user_to_system()
             user.confirmation_hash = None
-            if user.status == 'waiting':
+            if user.status == _auth.USER_STATUS_WAITING:
                 user.status = _auth.get_new_user_status()
             user.save()
         finally:
@@ -236,7 +246,7 @@ class UserProfileModify(_routing.Controller):
 
     def exec(self) -> str:
         try:
-            self.args['form'] = _frm.User(user_uid=_auth.get_user(nickname=self.arg('nickname')).uid)
+            self.args['form'] = _frm.User(self.request, user_uid=_auth.get_user(nickname=self.arg('nickname')).uid)
         except _auth.error.UserNotFound:
             raise self.not_found()
 

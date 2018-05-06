@@ -6,9 +6,9 @@ __license__ = 'MIT'
 
 from typing import Dict as _Dict, Union as _Union
 from collections import OrderedDict as _OrderedDict
-from pytsite import router as _router, lang as _lang, reg as _reg
+from pytsite import router as _router, lang as _lang, reg as _reg, http as _http
 from plugins import form as _form
-from . import _error, _frm
+from . import _error
 from ._driver import Driver as _Driver
 
 _drivers = _OrderedDict()  # type: _Dict[str, _Driver]
@@ -59,7 +59,7 @@ def get_drivers() -> _Dict[str, _Driver]:
     return _drivers.copy()
 
 
-def sign_in_form(driver_name: str = None, **kwargs) -> _form.Form:
+def sign_in_form(request: _http.Request, driver_name: str = None, **kwargs) -> _form.Form:
     """Get a sign in form
     """
     driver = get_driver(driver_name)
@@ -69,7 +69,7 @@ def sign_in_form(driver_name: str = None, **kwargs) -> _form.Form:
         'css': kwargs.get('css', '') + ' auth-ui-form auth-ui-sign-in driver-' + driver.name
     })
 
-    form = driver.get_sign_in_form(**kwargs)
+    form = driver.get_sign_in_form(request, **kwargs)
     form.action = _router.rule_url('auth_ui@sign_in_submit', {'driver': driver.name})
 
     if not form.title:
@@ -92,7 +92,7 @@ def sign_in_url(driver_name: str = None, redirect: _Union[str, bool] = False, ad
     return _router.rule_url('auth_ui@sign_in', rule_args, query=add_query, fragment=add_fragment)
 
 
-def sign_up_form(driver_name: str = None, **kwargs) -> _form.Form:
+def sign_up_form(request: _http.Request, driver_name: str = None, **kwargs) -> _form.Form:
     """Get a sign up form
     """
     driver = get_driver(driver_name)
@@ -102,7 +102,7 @@ def sign_up_form(driver_name: str = None, **kwargs) -> _form.Form:
         'css': kwargs.get('css', '') + ' auth-ui-form auth-ui-sign-up driver-' + driver.name
     })
 
-    form = driver.get_sign_up_form(**kwargs)
+    form = driver.get_sign_up_form(request, **kwargs)
     form.action = _router.rule_url('auth_ui@sign_up_submit', {'driver': driver.name})
 
     if not form.title:
@@ -124,3 +124,21 @@ def sign_out_url() -> str:
     """Get sign out URL
     """
     return _router.rule_url('auth_ui@sign_out', {'__redirect': _router.current_url()})
+
+
+def restore_account_form(request: _http.Request, driver_name: str = None, **kwargs) -> _form.Form:
+    """Get account restoration form
+    """
+    driver = get_driver(driver_name)
+
+    kwargs.update({
+        'name': kwargs.get('name', 'auth-ui-restore-account-' + driver.name),
+        'css': kwargs.get('css', '') + ' auth-ui-form auth-ui-restore-account driver-' + driver.name
+    })
+
+    form = driver.get_restore_account_form(request, **kwargs)
+
+    if not form.title:
+        form.title = _lang.t('auth_ui@restore_account')
+
+    return form

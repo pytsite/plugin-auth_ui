@@ -42,3 +42,4 @@ you_cannot_delete_yourself: "Ви не можете видалити свій о
 cancel: 'Cancel'
 profile_view_title: 'Профіль користувача :name'
 profile_edit_title: 'Редагування профіля'
+restore_account: 'Відновлення облікового запису'

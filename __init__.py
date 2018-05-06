@@ -27,7 +27,7 @@ def plugin_install():
 
 def plugin_load_uwsgi():
     from pytsite import router, lang, tpl
-    from plugins import robots_txt, auth, admin
+    from plugins import robots_txt, auth
     from . import _controllers, _eh
 
     # Resource packages
@@ -36,10 +36,11 @@ def plugin_load_uwsgi():
 
     # Routes
     bp = base_path()
-    router.handle(_controllers.SignInUpForm, bp + '/sign-in', 'auth_ui@sign_in_default')
-    router.handle(_controllers.SignInUpForm, bp + '/sign-in/<driver>', 'auth_ui@sign_in')
-    router.handle(_controllers.SignInUpForm, bp + '/sign-up', 'auth_ui@sign_up_default')
-    router.handle(_controllers.SignInUpForm, bp + '/sign-up/<driver>', 'auth_ui@sign_up')
+    router.handle(_controllers.Form, bp + '/sign-in', 'auth_ui@sign_in_default')
+    router.handle(_controllers.Form, bp + '/sign-in/<driver>', 'auth_ui@sign_in')
+    router.handle(_controllers.Form, bp + '/sign-up', 'auth_ui@sign_up_default')
+    router.handle(_controllers.Form, bp + '/sign-up/<driver>', 'auth_ui@sign_up')
+    router.handle(_controllers.Form, bp + '/restore/<driver>', 'auth_ui@restore_account')
     router.handle(_controllers.SignInSubmit, bp + '/sign-in/<driver>/post', 'auth_ui@sign_in_submit', methods='POST')
     router.handle(_controllers.SignUpSubmit, bp + '/sign-up/<driver>/post', 'auth_ui@sign_up_submit', methods='POST')
     router.handle(_controllers.SignUpConfirm, bp + '/sign-up/confirm/<code>', 'auth_ui@sign_up_confirm')
