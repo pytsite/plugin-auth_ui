@@ -4,6 +4,12 @@
 ## Changelog
 
 
+### 3.3 (2018-05-21)
+
+- Support of `auth-3.3`.
+- Bugs fixed.
+
+
 ### 3.2 (2018-05-06)
 
 - Support of PytSite-7.17, `auth-3.1`, `form-4.0`.

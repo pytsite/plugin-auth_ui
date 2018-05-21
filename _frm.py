@@ -31,6 +31,11 @@ class Role(_form.Form):
             required=True,
             enabled=role.name not in ('anonymous', 'user') if role else True,
         ))
+        self.add_rule('name', _auth.validation.AuthEntityFieldUnique(
+            e_type='role',
+            field_name='name',
+            exclude_uids=role.uid if role else None,
+        ))
 
         self.add_widget(_widget.input.Text(
             weight=20,
@@ -82,7 +87,13 @@ class Role(_form.Form):
         ))
 
     def _on_submit(self):
-        role = _auth.get_role(uid=self.attr('role_uid'))
+        role_uid = self.attr('role_uid')
+
+        if role_uid == '0':
+            role = _auth.create_role(self.val('name'), self.val('description'))
+        else:
+            role = _auth.get_role(uid=role_uid)
+
         for k, v in self.values.items():
             if role.has_field(k):
                 role.set_field(k, v)
@@ -161,7 +172,8 @@ class User(_form.Form):
                 required=True,
             ))
 
-            self.add_rule('login', _auth.validation.UserFieldUnique(
+            self.add_rule('login', _auth.validation.AuthEntityFieldUnique(
+                e_type='user',
                 field_name='login',
                 exclude_uids=user.uid if user else None,
             ))
@@ -176,7 +188,8 @@ class User(_form.Form):
         ))
         self.add_rules('nickname', (
             _auth.user_nickname_rule,
-            _auth.validation.UserFieldUnique(
+            _auth.validation.AuthEntityFieldUnique(
+                e_type='user',
                 field_name='nickname',
                 exclude_uids=user.uid if user else None,
             )
@@ -207,7 +220,8 @@ class User(_form.Form):
             label=_lang.t('auth_ui@email'),
             required=True,
         ))
-        self.add_rule('email', _auth.validation.UserFieldUnique(
+        self.add_rule('email', _auth.validation.AuthEntityFieldUnique(
+            e_type='user',
             field_name='email',
             exclude_uids=user.uid if user else None,
         ))
@@ -288,8 +302,13 @@ class User(_form.Form):
         ))
 
     def _on_submit(self):
-        user = _auth.get_user(uid=self.attr('user_uid'))
+        user_uid = self.attr('user_uid')
         c_user = _auth.get_current_user()
+
+        if user_uid == '0':
+            user = _auth.create_user(self.val('login'), self.val('password'))
+        else:
+            user = _auth.get_user(uid=user_uid)
 
         for k, v in self.values.items():
             if not user.has_field(k):
