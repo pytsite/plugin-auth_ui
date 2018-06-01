@@ -4,6 +4,11 @@
 ## Changelog
 
 
+### 3.4 (2018-06-01)
+
+- Support of `pytsite-7.24`.
+
+
 ### 3.3 (2018-05-21)
 
 - Support of `auth-3.3`.
@@ -12,7 +17,7 @@
 
 ### 3.2 (2018-05-06)
 
-- Support of PytSite-7.17, `auth-3.1`, `form-4.0`.
+- Support of `pytsite-7.17`, `auth-3.1`, `form-4.0`.
 - New `Driver`'s abstract method added: `get_restore_account_form()`.
 
 
@@ -129,7 +134,7 @@ Init fixed.
 
 ### 2.2 (2017-12-13)
 
-- Support for PytSite-7.0.
+- Support for `pytsite-7.0`.
 - Part of the code moved to the `auth_settings` plugin.
 
 
@@ -140,7 +145,7 @@ Support for last `auth` plugin update.
 
 ### 2.0 (2017-12-02)
 
-- Support for PytSite-6.1.
+- Support for `pytsite-6.1`.
 - Merged code from various plugins.
 - Added UI driver.
 

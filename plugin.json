@@ -1,6 +1,6 @@
 {
   "name": "auth_ui",
-  "version": "3.3",
+  "version": "3.4",
   "description": {
     "en": "Auth UI",
     "ru": "Auth UI",
@@ -13,7 +13,7 @@
     "url": "https://shepetko.com"
   },
   "requires": {
-    "pytsite": ">=7.17",
+    "pytsite": ">=7.24",
     "plugins": [
       "auth>=3.3",
       "assetman",
