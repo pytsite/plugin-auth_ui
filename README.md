@@ -4,6 +4,11 @@
 ## Changelog
 
 
+### 3.4.1 (2018-06-01)
+
+Invalid mail recipient issue fixed.
+
+
 ### 3.4 (2018-06-01)
 
 - Support of `pytsite-7.24`.

@@ -154,7 +154,7 @@ class SignUpSubmit(_routing.Controller):
                         'admin': admin,
                         'user': user,
                     })
-                    _mail.Message(user.login, _lang.t('auth_ui@registration_admin_notify'), msg).send()
+                    _mail.Message(admin.login, _lang.t('auth_ui@registration_admin_notify'), msg).send()
 
             _router.session().add_success_message(_lang.t('auth_ui@registration_form_success'))
 
