@@ -11,7 +11,7 @@ from plugins import assetman as _assetman, auth as _auth, query as _query
 from . import _api, _frm
 
 
-class AuthFilterController(_routing.Controller):
+class AuthFilter(_routing.Filter):
     """Authorization Filter
     """
 

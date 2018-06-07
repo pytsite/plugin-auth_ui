@@ -5,7 +5,7 @@ __email__ = 'a@shepetko.com'
 __license__ = 'MIT'
 
 # Public API
-from ._controllers import AuthFilterController
+from ._controllers import AuthFilter
 from . import _widget as widget, _frm as form
 from ._api import base_path, register_driver, get_driver, get_drivers, sign_in_form, sign_in_url, sign_out_url
 from ._driver import Driver

@@ -4,6 +4,12 @@
 ## Changelog
 
 
+### 3.5 (2018-06-07)
+
+- Support of `pytsite-7.29`.
+- `AuthFilterController` renamed to `AuthFilter`.
+
+
 ### 3.4.1 (2018-06-01)
 
 Invalid mail recipient issue fixed.
@@ -11,7 +17,7 @@ Invalid mail recipient issue fixed.
 
 ### 3.4 (2018-06-01)
 
-- Support of `pytsite-7.24`.
+Support of `pytsite-7.24`.
 
 
 ### 3.3 (2018-05-21)
