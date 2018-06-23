@@ -4,6 +4,11 @@
 ## Changelog
 
 
+### 3.5.1 (2018-06-23)
+
+Non existent confirmation hash processing fixed.
+
+
 ### 3.5 (2018-06-07)
 
 - Support of `pytsite-7.29`.

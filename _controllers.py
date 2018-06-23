@@ -178,7 +178,7 @@ class SignUpConfirm(_routing.Controller):
         try:
             user = next(_auth.find_users(_query.Query(_query.Eq('confirmation_hash', self.arg('code')))))
         except StopIteration:
-            raise self.not_found()
+            return self.redirect(self.arg('__redirect', _api.sign_in_url()))
 
         try:
             _auth.switch_user_to_system()
