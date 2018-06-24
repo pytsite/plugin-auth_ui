@@ -4,6 +4,11 @@
 ## Changelog
 
 
+### 3.6 (2018-06-24)
+
+Support for application provided form controllers.
+
+
 ### 3.5.1 (2018-06-23)
 
 Non existent confirmation hash processing fixed.

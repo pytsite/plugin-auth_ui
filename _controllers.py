@@ -73,14 +73,19 @@ class Form(_routing.Controller):
             'form': form,
         }
 
-        # Try to render tpl provided by application
         try:
-            return _tpl.render('auth_ui/form', tpl_args)
+            # Try to call application provided controller
+            return _router.call('auth_ui_form', self.args)
 
-        # Render plugin's built-in tpl
-        except _tpl.error.TemplateNotFound:
-            _assetman.preload('auth_ui@css/form.css')
-            return _tpl.render('auth_ui@form', tpl_args)
+        except _routing.error.RuleNotFound:
+            # Try to render tpl provided by application
+            try:
+                return _tpl.render('auth_ui/form', tpl_args)
+
+            # Render plugin's built-in tpl
+            except _tpl.error.TemplateNotFound:
+                _assetman.preload('auth_ui@css/form.css')
+                return _tpl.render('auth_ui@form', tpl_args)
 
 
 class SignInSubmit(_routing.Controller):
