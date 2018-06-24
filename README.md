@@ -4,6 +4,11 @@
 ## Changelog
 
 
+### 3.6.1 (2018-06-24)
+
+Controller arguments fix.
+
+
 ### 3.6 (2018-06-24)
 
 Support for application provided form controllers.

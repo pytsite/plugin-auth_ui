@@ -75,7 +75,7 @@ class Form(_routing.Controller):
 
         try:
             # Try to call application provided controller
-            return _router.call('auth_ui_form', self.args)
+            return _router.call('auth_ui_form', tpl_args)
 
         except _routing.error.RuleNotFound:
             # Try to render tpl provided by application
