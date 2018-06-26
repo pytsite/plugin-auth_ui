@@ -4,6 +4,11 @@
 ## Changelog
 
 
+### 3.7 (2018-06-26)
+
+Support of `assetman-2.0`.
+
+
 ### 3.6.1 (2018-06-24)
 
 Controller arguments fix.
