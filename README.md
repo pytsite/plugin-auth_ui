@@ -4,6 +4,11 @@
 ## Changelog
 
 
+### 3.8 (2018-07-03)
+
+`request` argument of form related API functions is now optional.
+
+
 ### 3.7 (2018-06-26)
 
 Support of `assetman-2.0`.

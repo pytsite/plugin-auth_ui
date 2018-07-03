@@ -59,7 +59,7 @@ def get_drivers() -> _Dict[str, _Driver]:
     return _drivers.copy()
 
 
-def sign_in_form(request: _http.Request, driver_name: str = None, **kwargs) -> _form.Form:
+def sign_in_form(request: _http.Request = None, driver_name: str = None, **kwargs) -> _form.Form:
     """Get a sign in form
     """
     driver = get_driver(driver_name)
@@ -69,7 +69,7 @@ def sign_in_form(request: _http.Request, driver_name: str = None, **kwargs) -> _
         'css': kwargs.get('css', '') + ' auth-ui-form auth-ui-sign-in driver-' + driver.name
     })
 
-    form = driver.get_sign_in_form(request, **kwargs)
+    form = driver.get_sign_in_form(request or _router.request(), **kwargs)
     form.action = _router.rule_url('auth_ui@sign_in_submit', {'driver': driver.name})
 
     if not form.title:
@@ -92,7 +92,7 @@ def sign_in_url(driver_name: str = None, redirect: _Union[str, bool] = False, ad
     return _router.rule_url('auth_ui@sign_in', rule_args, query=add_query, fragment=add_fragment)
 
 
-def sign_up_form(request: _http.Request, driver_name: str = None, **kwargs) -> _form.Form:
+def sign_up_form(request: _http.Request = None, driver_name: str = None, **kwargs) -> _form.Form:
     """Get a sign up form
     """
     driver = get_driver(driver_name)
@@ -102,7 +102,7 @@ def sign_up_form(request: _http.Request, driver_name: str = None, **kwargs) -> _
         'css': kwargs.get('css', '') + ' auth-ui-form auth-ui-sign-up driver-' + driver.name
     })
 
-    form = driver.get_sign_up_form(request, **kwargs)
+    form = driver.get_sign_up_form(request or _router.request(), **kwargs)
     form.action = _router.rule_url('auth_ui@sign_up_submit', {'driver': driver.name})
 
     if not form.title:
@@ -126,7 +126,7 @@ def sign_out_url() -> str:
     return _router.rule_url('auth_ui@sign_out', {'__redirect': _router.current_url()})
 
 
-def restore_account_form(request: _http.Request, driver_name: str = None, **kwargs) -> _form.Form:
+def restore_account_form(request: _http.Request = None, driver_name: str = None, **kwargs) -> _form.Form:
     """Get account restoration form
     """
     driver = get_driver(driver_name)
@@ -136,7 +136,7 @@ def restore_account_form(request: _http.Request, driver_name: str = None, **kwar
         'css': kwargs.get('css', '') + ' auth-ui-form auth-ui-restore-account driver-' + driver.name
     })
 
-    form = driver.get_restore_account_form(request, **kwargs)
+    form = driver.get_restore_account_form(request or _router.request(), **kwargs)
 
     if not form.title:
         form.title = _lang.t('auth_ui@restore_account')
