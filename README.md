@@ -4,6 +4,11 @@
 ## Changelog
 
 
+### 3.8.1 (2018-07-08)
+
+Missing public API functions added.
+
+
 ### 3.8 (2018-07-03)
 
 `request` argument of form related API functions is now optional.
