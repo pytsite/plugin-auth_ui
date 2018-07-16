@@ -7,7 +7,7 @@ __license__ = 'MIT'
 from typing import Dict as _Dict, Union as _Union
 from collections import OrderedDict as _OrderedDict
 from pytsite import router as _router, lang as _lang, reg as _reg, http as _http
-from plugins import form as _form
+from plugins import form as _form, http_api as _http_api
 from . import _error
 from ._driver import Driver as _Driver
 
@@ -70,7 +70,7 @@ def sign_in_form(request: _http.Request = None, driver_name: str = None, **kwarg
     })
 
     form = driver.get_sign_in_form(request or _router.request(), **kwargs)
-    form.action = _router.rule_url('auth_ui@sign_in_submit', {'driver': driver.name})
+    form.action = _http_api.url('auth_http_api@post_sign_in', {'driver': driver.name})
 
     if not form.title:
         form.title = _lang.t('auth_ui@authentication')
@@ -103,7 +103,7 @@ def sign_up_form(request: _http.Request = None, driver_name: str = None, **kwarg
     })
 
     form = driver.get_sign_up_form(request or _router.request(), **kwargs)
-    form.action = _router.rule_url('auth_ui@sign_up_submit', {'driver': driver.name})
+    form.action = _http_api.url('auth_http_api@post_sign_up', {'driver': driver.name})
 
     if not form.title:
         form.title = _lang.t('auth_ui@registration')

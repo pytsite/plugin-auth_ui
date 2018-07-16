@@ -5,8 +5,8 @@ __email__ = 'a@shepetko.com'
 __license__ = 'MIT'
 
 from typing import Union as _Union, Optional as _Optional
-from pytsite import lang as _lang, http as _http, metatag as _metatag, tpl as _tpl, router as _router, mail as _mail, \
-    logger as _logger, routing as _routing, util as _util
+from pytsite import lang as _lang, http as _http, metatag as _metatag, tpl as _tpl, router as _router, util as _util, \
+    routing as _routing
 from plugins import assetman as _assetman, auth as _auth, query as _query
 from . import _api, _frm
 
@@ -15,7 +15,7 @@ class AuthFilter(_routing.Filter):
     """Authorization Filter
     """
 
-    def exec(self) -> _Optional[_http.RedirectResponse]:
+    def before(self) -> _Optional[_http.RedirectResponse]:
         if not _auth.get_current_user().is_anonymous:
             return
 
@@ -31,7 +31,7 @@ class AuthFilter(_routing.Filter):
 
 class Form(_routing.Controller):
     def exec(self) -> _Union[str, _http.RedirectResponse]:
-        # Redirect to the base URL if user is authenticated
+        # Redirect to the base URL if user is already authenticated
         if not _auth.get_current_user().is_anonymous:
             return self.redirect(self.arg('__redirect', _router.base_url()))
 
@@ -86,93 +86,6 @@ class Form(_routing.Controller):
             except _tpl.error.TemplateNotFound:
                 _assetman.preload('auth_ui@css/form.css')
                 return _tpl.render('auth_ui@form', tpl_args)
-
-
-class SignInSubmit(_routing.Controller):
-    """Sign In Form Submit
-    """
-
-    def exec(self):
-        redirect = self.arg('__redirect', _router.base_url())
-
-        # Redirect user if it already authenticated
-        if not _auth.get_current_user().is_anonymous:
-            return self.redirect(redirect)
-
-        driver_name = self.arg('driver')
-
-        try:
-            _auth.sign_in(driver_name, self.args)
-
-        except _auth.error.UserNotActive as e:
-            _logger.warn(e)
-            _router.session().add_warning_message(str(e))
-
-            redirect = _router.rule_url('auth_ui@sign_in', rule_args={
-                'driver': driver_name,
-                'login': self.arg('login'),
-                '__redirect': redirect,
-            })
-
-        except Exception as e:
-            _logger.error(e)
-            _router.session().add_error_message(_lang.t('auth_ui@authentication_error'))
-
-            redirect = _router.rule_url('auth_ui@sign_in', rule_args={
-                'driver': driver_name,
-                'login': self.arg('login'),
-                '__redirect': redirect,
-            })
-
-        return self.redirect(redirect)
-
-
-class SignUpSubmit(_routing.Controller):
-    """Sign Up Form Submit
-    """
-
-    def exec(self):
-        # Default redirect
-        redirect_url = self.args.pop('__redirect', _router.base_url())
-
-        # Redirect user if it already authenticated
-        if not _auth.get_current_user().is_anonymous:
-            return self.redirect(redirect_url)
-
-        driver_name = self.arg('driver')
-
-        try:
-            # Register a new user
-            user = _auth.sign_up(driver_name, self.args)
-
-            # Send a confirmation email to the user
-            msg = _tpl.render('auth_ui@mail/{}/sign-up'.format(_lang.get_current()), {
-                'user': user,
-                'confirm_url': _router.rule_url('auth_ui@sign_up_confirm',
-                                                {'code': user.confirmation_hash}) if not user.is_confirmed else None
-            })
-            _mail.Message(user.login, _lang.t('auth_ui@confirm_registration'), msg).send()
-
-            if _auth.is_sign_up_admins_notification_enabled():
-                for admin in _auth.get_admin_users():
-                    msg = _tpl.render('auth_ui@mail/{}/sign-up-admin-notify'.format(_lang.get_current()), {
-                        'admin': admin,
-                        'user': user,
-                    })
-                    _mail.Message(admin.login, _lang.t('auth_ui@registration_admin_notify'), msg).send()
-
-            _router.session().add_success_message(_lang.t('auth_ui@registration_form_success'))
-
-            return self.redirect(redirect_url)
-
-        except Exception as e:
-            _logger.error(e)
-            _router.session().add_error_message(_lang.t('auth_ui@registration_error'))
-
-            return self.redirect(_router.rule_url('auth_ui@sign_up', rule_args={
-                'driver': driver_name,
-                '__redirect': redirect_url,
-            }))
 
 
 class SignUpConfirm(_routing.Controller):

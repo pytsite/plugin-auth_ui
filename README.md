@@ -4,6 +4,11 @@
 ## Changelog
 
 
+### 3.9 (2018-07-16)
+
+Support of `auth-3.4`, `http_api-2.0` and  `auth_http_api-2.0`.
+
+
 ### 3.8.1 (2018-07-08)
 
 Missing public API functions added.

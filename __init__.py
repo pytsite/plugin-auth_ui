@@ -42,21 +42,17 @@ def plugin_load_uwsgi():
     router.handle(_controllers.Form, bp + '/sign-up', 'auth_ui@sign_up_default')
     router.handle(_controllers.Form, bp + '/sign-up/<driver>', 'auth_ui@sign_up')
     router.handle(_controllers.Form, bp + '/restore/<driver>', 'auth_ui@restore_account')
-    router.handle(_controllers.SignInSubmit, bp + '/sign-in/<driver>/post', 'auth_ui@sign_in_submit', methods='POST')
-    router.handle(_controllers.SignUpSubmit, bp + '/sign-up/<driver>/post', 'auth_ui@sign_up_submit', methods='POST')
     router.handle(_controllers.SignUpConfirm, bp + '/sign-up/confirm/<code>', 'auth_ui@sign_up_confirm')
     router.handle(_controllers.SignOut, bp + '/sign-out', 'auth_ui@sign_out')
     router.handle(_controllers.UserProfileView, bp + '/user/<nickname>', 'auth_ui@user_profile_view')
     router.handle(_controllers.UserProfileModify, bp + '/user/<nickname>/edit', 'auth_ui@user_profile_modify')
 
     # Router events
-    router.on_dispatch(_eh.router_dispatch, -999, '*')
-    router.on_xhr_dispatch(_eh.router_dispatch, -999, '*')
-    router.on_response(_eh.router_response, -999, '*')
-    router.on_xhr_response(_eh.router_response, -999, '*')
+    router.on_dispatch(_eh.on_router_dispatch)
 
     # Auth events
-    auth.on_user_status_change(_eh.auth_user_status_change)
+    auth.on_sign_up(_eh.on_auth_sign_up)
+    auth.on_user_status_change(_eh.on_auth_user_status_change)
 
     # robots.txt rules
     robots_txt.disallow(bp + '/')
