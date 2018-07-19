@@ -4,6 +4,11 @@
 ## Changelog
 
 
+### 3.10 (2018-07-19)
+
+User profile templates names changed.
+
+
 ### 3.9 (2018-07-16)
 
 Support of `auth-3.4`, `http_api-2.0` and  `auth_http_api-2.0`.

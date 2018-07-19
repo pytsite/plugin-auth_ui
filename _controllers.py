@@ -150,7 +150,7 @@ class UserProfileView(_routing.Controller):
         try:
             return _router.call('auth_ui_user_profile_view', self.args)
         except _routing.error.RuleNotFound:
-            return _tpl.render('auth_ui/user_profile_view', self.args)
+            return _tpl.render('auth_ui/user-profile-view', self.args)
 
 
 class UserProfileModify(_routing.Controller):
@@ -173,4 +173,4 @@ class UserProfileModify(_routing.Controller):
         try:
             return _router.call('auth_ui_user_profile_modify', self.args)
         except _routing.error.RuleNotFound:
-            return _tpl.render('auth_ui/user_profile_modify', self.args)
+            return _tpl.render('auth_ui/user-profile-modify', self.args)
