@@ -121,6 +121,7 @@ class User(_form.Form):
 
         self.assets.extend(['auth_ui@css/form.css'])
         self.css += ' auth-ui-form-user'
+        self.area_footer_css += ' text-center'
 
     def _on_setup_widgets(self):
         user_uid = self.attr('user_uid')
@@ -297,7 +298,7 @@ class User(_form.Form):
             uid='action_cancel',
             weight=10,
             form_area='footer',
-            icon='fa fas fa-ban',
+            icon='fa fas fa-fw fa-ban',
             value=_lang.t('auth_ui@cancel'),
             href=self.redirect,
             color='default btn-secondary',
@@ -305,7 +306,7 @@ class User(_form.Form):
 
         # "Save" button
         submit_btn = self.get_widget('action_submit')
-        submit_btn.icon = 'fa fas fa-save'
+        submit_btn.icon = 'fa fas fa-fw fa-save'
 
     def _on_submit(self):
         user_uid = self.attr('user_uid')

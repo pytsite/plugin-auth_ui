@@ -4,6 +4,11 @@
 ## Changelog
 
 
+### 3.10.2 (2018-07-22)
+
+Form icons fix.
+
+
 ### 3.10.1 (2018-07-21)
 
 Support of Twitter Bootstrap 4 fixed.
