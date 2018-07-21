@@ -4,6 +4,11 @@
 ## Changelog
 
 
+### 3.10.1 (2018-07-21)
+
+Support of Twitter Bootstrap 4 fixed.
+
+
 ### 3.10 (2018-07-19)
 
 User profile templates names changed.
