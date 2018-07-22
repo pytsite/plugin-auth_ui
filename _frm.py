@@ -304,10 +304,6 @@ class User(_form.Form):
             color='default btn-secondary',
         ))
 
-        # "Save" button
-        submit_btn = self.get_widget('action_submit')
-        submit_btn.icon = 'fa fas fa-fw fa-save'
-
     def _on_submit(self):
         user_uid = self.attr('user_uid')
         c_user = _auth.get_current_user()
