@@ -4,6 +4,12 @@
 ## Changelog
 
 
+### 3.11 (2018-07-29)
+
+- Support of `auth-3.5`.
+- User's form reworked.
+
+
 ### 3.10.3 (2018-07-22)
 
 Form icons fix.

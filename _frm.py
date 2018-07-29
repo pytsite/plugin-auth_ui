@@ -4,7 +4,7 @@ __author__ = 'Alexander Shepetko'
 __email__ = 'a@shepetko.com'
 __license__ = 'MIT'
 
-from pytsite import validation as _validation, lang as _lang, errors as _errors
+from pytsite import validation as _validation, errors as _errors
 from plugins import form as _form, auth as _auth, widget as _widget, file_ui as _file_ui, permissions as _permissions
 from . import _widget as _w
 
@@ -24,10 +24,9 @@ class Role(_form.Form):
         role = _auth.get_role(uid=role_uid) if role_uid != '0' else None
 
         self.add_widget(_widget.input.Text(
-            weight=10,
             uid='name',
             value=role.name if role else None,
-            label=_lang.t('auth_ui@name'),
+            label=self.t('name'),
             required=True,
             enabled=role.name not in ('anonymous', 'user') if role else True,
         ))
@@ -38,10 +37,9 @@ class Role(_form.Form):
         ))
 
         self.add_widget(_widget.input.Text(
-            weight=20,
             uid='description',
             value=role.description if role else None,
-            label=_lang.t('auth_ui@description'),
+            label=self.t('description'),
             required=True,
             enabled=role.name not in ('anonymous', 'user') if role else True,
         ))
@@ -49,8 +47,7 @@ class Role(_form.Form):
         # Permissions tabs
         perms_tabs = _widget.select.Tabs(
             uid='permissions',
-            weight=30,
-            label=_lang.t('auth_ui@permissions')
+            label=self.t('permissions')
         )
 
         # Permissions tabs content
@@ -64,13 +61,13 @@ class Role(_form.Form):
 
             # Tab
             tab_id = 'permissions-' + g_name
-            perms_tabs.add_tab(tab_id, _lang.t(g_desc))
+            perms_tabs.add_tab(tab_id, self.t(g_desc))
 
             # Tab's content
             perms_tabs.add_widget(_widget.select.Checkboxes(
                 uid='permission-checkboxes-' + tab_id,
                 name='permissions',
-                items=[(p[0], _lang.t(p[1])) for p in perms],
+                items=[(p[0], self.t(p[1])) for p in perms],
                 value=role.permissions if role else [],
             ), tab_id)
 
@@ -79,10 +76,10 @@ class Role(_form.Form):
         # "Cancel" button
         self.add_widget(_widget.button.Link(
             uid='action_cancel',
-            weight=10,
+            weight=100,
             form_area='footer',
             icon='fa fas fa-ban',
-            value=_lang.t('auth_ui@cancel'),
+            value=self.t('cancel'),
             href=self.redirect,
         ))
 
@@ -105,7 +102,7 @@ class User(_form.Form):
     def _on_setup_form(self):
         user_uid = self.attr('user_uid')
         if not user_uid:
-            raise RuntimeError("Form's attribute 'user_uid' was not provided")
+            raise ValueError("Form's attribute 'user_uid' was not provided")
 
         c_user = _auth.get_current_user()
 
@@ -128,64 +125,57 @@ class User(_form.Form):
         user = _auth.get_user(uid=user_uid) if user_uid != '0' else None
         c_user = _auth.get_current_user()
 
-        # Picture wrapper
-        pic_wrapper = _widget.Container(
-            uid='picture-wrapper',
-            weight=2,
-            css='col-xs-12 col-sm-4 col-lg-3',
-        )
-        self.add_widget(pic_wrapper)
-
-        # Content wrapper
-        content_wrapper = _widget.Container(
-            uid='content-wrapper',
-            weight=4,
-            css='col-xs-12 col-sm-8 col-lg-9',
-        )
-        self.add_widget(content_wrapper)
-
-        # Image
-        pic_wrapper.append_child(_file_ui.widget.ImagesUpload(
-            weight=10,
-            uid='picture',
-            value=user.picture if user else None,
-            max_file_size=1,
-            show_numbers=False,
-            dnd=False,
-            slot_css='col-xs-B-12 col-xs-6 col-sm-12',
+        row_1 = self.add_widget(_widget.container.Card(
+            uid='row_1',
+            header=self.t('registration_info'),
+            body_css='row',
         ))
 
-        # Profile is public
-        content_wrapper.append_child(_widget.select.Checkbox(
-            weight=10,
-            uid='is_public',
-            value=user.is_public if user else None,
-            label=_lang.t('auth_ui@profile_is_public'),
+        row_1_left = row_1.append_child(_widget.container.Container(
+            uid='row_1_left',
+            css='col-xs-12 col-12 col-sm-4 col-md-2',
+        ))
+
+        row_1_center = row_1.append_child(_widget.container.Container(
+            uid='row_1_center',
+            css='col-xs-12 col-12 col-sm-4 col-md-5',
+        ))
+
+        row_1_right = row_1.append_child(_widget.container.Container(
+            uid='row_1_right',
+            css='col-xs-12 col-12 col-sm-4 col-md-5',
+        ))
+
+        # Picture
+        row_1_left.append_child(_file_ui.widget.ImagesUpload(
+            uid='picture',
+            value=user.picture if user else None,
+            max_file_size=3,
+            label=self.t('photo'),
         ))
 
         # Login
-        if c_user.is_admin:
-            content_wrapper.append_child(_widget.input.Email(
-                weight=30,
-                uid='login',
-                value=user.login if user else None,
-                label=_lang.t('auth_ui@login'),
-                required=True,
-            ))
-
-            self.add_rule('login', _auth.validation.AuthEntityFieldUnique(
-                e_type='user',
-                field_name='login',
-                exclude_uids=user.uid if user else None,
-            ))
+        row_1_center.append_child(_widget.input.Email(
+            uid='login',
+            value=user.login if user else None,
+            label=self.t('email'),
+            required=True,
+            enabled=c_user.is_admin,
+            max_length=_auth.LOGIN_MAX_LENGTH,
+        ))
+        self.add_rule('login', _auth.validation.AuthEntityFieldUnique(
+            e_type='user',
+            field_name='login',
+            exclude_uids=user.uid if user else None,
+        ))
 
         # Nickname
-        content_wrapper.append_child(_widget.input.Text(
-            weight=40,
+        row_1_center.append_child(_widget.input.Text(
             uid='nickname',
             value=user.nickname if user else None,
-            label=_lang.t('auth_ui@nickname'),
+            label=self.t('nickname'),
             required=True,
+            max_length=_auth.NICKNAME_MAX_LENGTH,
         ))
         self.add_rules('nickname', (
             _auth.user_nickname_rule,
@@ -196,113 +186,265 @@ class User(_form.Form):
             )
         ))
 
+        # Birth date
+        row_1_center.append_child(_widget.select.DateTime(
+            uid='birth_date',
+            value=user.birth_date if user else None,
+            label=self.t('birth_date'),
+            timepicker=False,
+        ))
+
+        # Gender
+        row_1_center.append_child(_widget.select.Select(
+            uid='gender',
+            value=user.gender if user else None,
+            label=self.t('gender'),
+            items=[
+                ('m', self.t('male')),
+                ('f', self.t('female')),
+            ]
+        ))
+
         # First name
-        content_wrapper.append_child(_widget.input.Text(
-            weight=50,
+        row_1_right.append_child(_widget.input.Text(
             uid='first_name',
             value=user.first_name if user else None,
-            label=_lang.t('auth_ui@first_name'),
+            label=self.t('first_name'),
             required=True,
+            max_length=_auth.FIRST_NAME_MAX_LENGTH,
+        ))
+
+        # Middle name
+        row_1_right.append_child(_widget.input.Text(
+            uid='middle_name',
+            value=user.middle_name if user else None,
+            label=self.t('middle_name'),
+            max_length=_auth.MIDDLE_NAME_MAX_LENGTH,
         ))
 
         # Last name
-        content_wrapper.append_child(_widget.input.Text(
-            weight=60,
+        row_1_right.append_child(_widget.input.Text(
             uid='last_name',
             value=user.last_name if user else None,
-            label=_lang.t('auth_ui@last_name'),
+            label=self.t('last_name'),
+            max_length=_auth.LAST_NAME_MAX_LENGTH,
         ))
 
-        # Email
-        content_wrapper.append_child(_widget.input.Email(
-            weight=70,
-            uid='email',
-            value=user.email if user else None,
-            label=_lang.t('auth_ui@email'),
-            required=True,
-        ))
-        self.add_rule('email', _auth.validation.AuthEntityFieldUnique(
-            e_type='user',
-            field_name='email',
-            exclude_uids=user.uid if user else None,
+        # Row 2
+        row_2 = self.add_widget(_widget.container.Container(
+            uid='row_2',
+            body_css='row',
         ))
 
-        # Password
-        content_wrapper.append_child(_widget.input.Password(
-            weight=80,
-            uid='password',
-            label=_lang.t('auth_ui@new_password'),
-            autocomplete='off',
+        # Row 2 left
+        row_2_left = row_2.append_child(_widget.container.Container(
+            uid='row_2_left',
+            css='col-xs-12 col-12 col-sm-6 col-lg-8',
+        ))
+
+        # Contact info
+        contact = row_2_left.append_child(_widget.container.Card(
+            uid='contact',
+            body_css='row',
+            header=self.t('contact_info'),
+        ))
+
+        # Contact info left
+        contact_left = contact.append_child(_widget.container.Container(
+            uid='contact_left',
+            css='col-xs-12 col-12 col-lg-6'
         ))
 
         # Country
-        content_wrapper.append_child(_widget.input.Text(
-            weight=90,
+        contact_left.append_child(_widget.input.Text(
             uid='country',
             value=user.country if user else None,
-            label=_lang.t('auth_ui@country'),
+            label=self.t('country'),
+            max_length=_auth.COUNTRY_MAX_LENGTH,
+        ))
+
+        # Postal code
+        contact_left.append_child(_widget.input.Text(
+            uid='postal_code',
+            value=user.postal_code if user else None,
+            label=self.t('postal_code'),
+            max_length=_auth.POSTAL_CODE_MAX_LENGTH,
+        ))
+
+        # Region
+        contact_left.append_child(_widget.input.Text(
+            uid='region',
+            value=user.region if user else None,
+            label=self.t('region'),
+            max_length=_auth.REGION_MAX_LENGTH,
         ))
 
         # City
-        content_wrapper.append_child(_widget.input.Text(
-            weight=100,
+        contact_left.append_child(_widget.input.Text(
             uid='city',
             value=user.city if user else None,
-            label=_lang.t('auth_ui@city'),
+            label=self.t('city'),
+            max_length=_auth.CITY_MAX_LENGTH,
         ))
 
-        # Description
-        content_wrapper.append_child(_widget.input.TextArea(
-            weight=110,
-            uid='description',
-            value=user.description if user else None,
-            label=_lang.t('auth_ui@about_yourself'),
-            max_length=1024,
+        # Contact info right
+        contact_right = contact.append_child(_widget.container.Container(
+            uid='contact_right',
+            css='col-xs-12 col-12 col-lg-6'
         ))
 
-        # Status
-        if c_user.is_admin:
-            content_wrapper.append_child(_widget.select.Select(
-                weight=120,
-                uid='status',
-                value=user.status if user else _auth.get_new_user_status(),
-                label=_lang.t('auth_ui@status'),
-                items=_auth.get_user_statuses(),
-                h_size='col-sm-5 col-md-4 col-lg-3',
-                required=True,
-                append_none_item=False,
-            ))
+        # Street
+        contact_right.append_child(_widget.input.Text(
+            uid='street',
+            value=user.street if user else None,
+            label=self.t('street'),
+            max_length=_auth.STREET_MAX_LENGTH,
+        ))
+
+        # House number
+        contact_right.append_child(_widget.input.Text(
+            uid='house_number',
+            value=user.house_number if user else None,
+            label=self.t('house_number'),
+            max_length=_auth.HOUSE_NUMBER_MAX_LENGTH,
+        ))
+
+        # Apt number
+        contact_right.append_child(_widget.input.Text(
+            uid='apt_number',
+            value=user.apt_number if user else None,
+            label=self.t('apt_number'),
+            max_length=_auth.APT_NUMBER_MAX_LENGTH,
+        ))
+
+        # Phone
+        contact_right.append_child(_widget.input.Text(
+            uid='phone',
+            value=user.phone if user else None,
+            label=self.t('phone'),
+            max_length=_auth.PHONE_MAX_LENGTH,
+        ))
 
         # URLs
-        content_wrapper.append_child(_widget.input.StringList(
-            weight=130,
+        contact.append_child(_widget.input.StringList(
             uid='urls',
             value=user.urls if user else None,
-            label=_lang.t('auth_ui@social_links'),
+            label=self.t('social_links'),
             max_values=5,
-            add_btn_label=_lang.t('auth_ui@add_link'),
+            add_btn_label=self.t('add_link'),
+            css='col-xs-12 col-12'
         ))
         self.add_rule('urls', _validation.rule.Url())
 
-        # Roles
+        # Row 2 right
+        row_2_right = row_2.append_child(_widget.container.Container(
+            uid='row_2_right',
+            css='col-xs-12 col-12 col-sm-6 col-lg-4',
+        ))
+
+        # Cover picture card
+        cover_picture_card = row_2_right.append_child(_widget.container.Card(
+            uid='cover_picture_card',
+            header=self.t('cover_picture'),
+        ))
+
+        # Cover picture
+        cover_picture_card.append_child(_file_ui.widget.ImagesUpload(
+            uid='cover_picture',
+            thumb_width=1200,
+            thumb_height=450,
+            max_file_size=5,
+            value=user.cover_picture if user else None,
+        ))
+
+        # Security card
+        security = row_2_right.append_child(_widget.container.Card(
+            uid='security',
+            header=self.t('security'),
+        ))
+
+        # Profile is public
+        security.append_child(_widget.select.Checkbox(
+            uid='is_public',
+            value=user.is_public if user else None,
+            label=self.t('this_is_public_profile'),
+        ))
+
+        # New password
+        security.append_child(_widget.input.Password(
+            uid='password',
+            label=self.t('new_password'),
+            autocomplete='off',
+        ))
+
+        # New password confirm
+        security.append_child(_widget.input.Password(
+            uid='password_confirm',
+            label=self.t('new_password_confirmation'),
+            autocomplete='off',
+        ))
+
+        # Row 3
+        row_3 = self.add_widget(_widget.container.Card(
+            uid='row_3',
+            header=self.t('about_yourself'),
+        ))
+
+        # Description
+        row_3.append_child(_widget.input.TextArea(
+            uid='description',
+            value=user.description if user else None,
+            max_length=_auth.DESCRIPTION_MAX_LENGTH,
+        ))
+
+        # Row 4
         if c_user.is_admin:
-            content_wrapper.append_child(_w.RolesCheckboxes(
-                weight=140,
+            admin = self.add_widget(_widget.container.Card(
+                uid='admin',
+                header=self.t('administration'),
+                body_css='row',
+            ))
+
+            admin.append_child(_widget.select.Select(
+                uid='status',
+                value=user.status if user else _auth.get_new_user_status(),
+                label=self.t('status'),
+                items=_auth.get_user_statuses(),
+                required=True,
+                append_none_item=False,
+                css='col-xs-12 col-12 col-md-3'
+            ))
+
+            admin.append_child(_w.RolesCheckboxes(
                 uid='roles',
                 value=user.roles if user else [_auth.get_role(r) for r in _auth.get_new_user_roles()],
-                label=_lang.t('auth_ui@roles'),
+                label=self.t('roles'),
+                css='col-xs-12 col-12 col-md-3'
             ))
 
         # "Cancel" button
         self.add_widget(_widget.button.Link(
             uid='action_cancel',
-            weight=10,
+            weight=100,
             form_area='footer',
             icon='fa fas fa-fw fa-ban',
-            value=_lang.t('auth_ui@cancel'),
+            value=self.t('cancel'),
             href=self.redirect,
             color='default btn-secondary',
         ))
+
+    def _on_validate(self):
+        errors = {}
+
+        if self.val('password') and (self.val('password') != self.val('password_confirm')):
+            err_msg = self.t('passwords_not_match')
+            errors.update({
+                'password': err_msg,
+                'password_confirm': err_msg,
+            })
+
+        if errors:
+            raise _form.FormValidationError(errors)
 
     def _on_submit(self):
         user_uid = self.attr('user_uid')
