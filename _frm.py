@@ -17,6 +17,7 @@ class Role(_form.Form):
         if not _auth.get_current_user().is_admin:
             raise _errors.ForbidOperation()
 
+        self.name = 'auth_ui_role'
         self.css += ' auth-ui-form-role'
 
     def _on_setup_widgets(self):
@@ -116,8 +117,9 @@ class User(_form.Form):
         elif not c_user.is_admin:
             raise _errors.ForbidOperation()
 
-        self.assets.extend(['auth_ui@css/form.css'])
+        self.name = 'auth_ui_user'
         self.css += ' auth-ui-form-user'
+        self.assets.extend(['auth_ui@css/form.css'])
         self.area_footer_css += ' text-center'
 
     def _on_setup_widgets(self):
