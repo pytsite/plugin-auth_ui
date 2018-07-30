@@ -4,7 +4,7 @@ __author__ = 'Alexander Shepetko'
 __email__ = 'a@shepetko.com'
 __license__ = 'MIT'
 
-from pytsite import validation as _validation, errors as _errors
+from pytsite import validation as _validation, errors as _errors, router as _router
 from plugins import form as _form, auth as _auth, widget as _widget, file_ui as _file_ui, permissions as _permissions
 from . import _widget as _w
 
@@ -465,3 +465,6 @@ class User(_form.Form):
             user.set_field(k, v)
 
         user.save()
+
+        if not self.redirect:
+            self.redirect = _router.rule_url('auth_ui@user_profile_view', {'nickname': user.nickname})

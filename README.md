@@ -4,6 +4,11 @@
 ## Changelog
 
 
+### 3.12 (2018-07-30)
+
+Support of `form-4.8`.
+
+
 ### 3.11 (2018-07-29)
 
 - Support of `auth-3.5`.
