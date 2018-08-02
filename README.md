@@ -4,6 +4,11 @@
 ## Changelog
 
 
+### 3.14 (2018-08-02)
+
+Support of `widget-2.5`.
+
+
 ### 3.13 (2018-07-30)
 
 Forms names added.

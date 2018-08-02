@@ -1,6 +1,6 @@
 {
   "name": "auth_ui",
-  "version": "3.13",
+  "version": "3.14",
   "description": {
     "en": "Auth UI",
     "ru": "Auth UI",
@@ -27,7 +27,7 @@
       "query>=1.0",
       "robots_txt",
       "twitter_bootstrap",
-      "widget>=2.4"
+      "widget>=2.5"
     ]
   }
 }

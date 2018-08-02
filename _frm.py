@@ -332,9 +332,10 @@ class User(_form.Form):
             uid='urls',
             value=user.urls if user else None,
             label=self.t('social_links'),
-            max_values=5,
+            max_rows=10,
             add_btn_label=self.t('add_link'),
-            css='col-xs-12 col-12'
+            css='col-xs-12 col-12',
+            unique=True,
         ))
         self.add_rule('urls', _validation.rule.Url())
 
