@@ -4,6 +4,11 @@
 ## Changelog
 
 
+### 3.14.1 (2018-08-08)
+
+Role's form fixed.
+
+
 ### 3.14 (2018-08-02)
 
 Support of `widget-2.5`.

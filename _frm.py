@@ -4,7 +4,7 @@ __author__ = 'Alexander Shepetko'
 __email__ = 'a@shepetko.com'
 __license__ = 'MIT'
 
-from pytsite import validation as _validation, errors as _errors, router as _router
+from pytsite import validation as _validation, errors as _errors, router as _router, lang as _lang
 from plugins import form as _form, auth as _auth, widget as _widget, file_ui as _file_ui, permissions as _permissions
 from . import _widget as _w
 
@@ -62,13 +62,13 @@ class Role(_form.Form):
 
             # Tab
             tab_id = 'permissions-' + g_name
-            perms_tabs.add_tab(tab_id, self.t(g_desc))
+            perms_tabs.add_tab(tab_id, _lang.t(g_desc))
 
             # Tab's content
             perms_tabs.add_widget(_widget.select.Checkboxes(
                 uid='permission-checkboxes-' + tab_id,
                 name='permissions',
-                items=[(p[0], self.t(p[1])) for p in perms],
+                items=[(p[0], _lang.t(p[1])) for p in perms],
                 value=role.permissions if role else [],
             ), tab_id)
 
