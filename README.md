@@ -4,6 +4,11 @@
 ## Changelog
 
 
+### 3.14.2 (2018-08-08)
+
+Translations fixed.
+
+
 ### 3.14.1 (2018-08-08)
 
 Role's form fixed.
