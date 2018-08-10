@@ -1,6 +1,6 @@
 """PytSite Auth UI Plugin Forms
 """
-__author__ = 'Alexander Shepetko'
+__author__ = 'Oleksandr Shepetko'
 __email__ = 'a@shepetko.com'
 __license__ = 'MIT'
 
@@ -232,6 +232,14 @@ class User(_form.Form):
             max_length=_auth.LAST_NAME_MAX_LENGTH,
         ))
 
+        # Position
+        row_1_right.append_child(_widget.input.Text(
+            uid='position',
+            value=user.position if user else None,
+            label=self.t('position'),
+            max_length=_auth.USER_POSITION_MAX_LENGTH,
+        ))
+
         # Row 2
         row_2 = self.add_widget(_widget.container.Container(
             uid='row_2',
@@ -397,7 +405,7 @@ class User(_form.Form):
         row_3.append_child(_widget.input.TextArea(
             uid='description',
             value=user.description if user else None,
-            max_length=_auth.DESCRIPTION_MAX_LENGTH,
+            max_length=_auth.USER_DESCRIPTION_MAX_LENGTH,
         ))
 
         # Row 4

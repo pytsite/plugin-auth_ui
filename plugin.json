@@ -1,6 +1,6 @@
 {
   "name": "auth_ui",
-  "version": "3.14.2",
+  "version": "3.15",
   "description": {
     "en": "Auth UI",
     "ru": "Auth UI",
@@ -8,14 +8,14 @@
   },
   "url": "https://github.com/pytsite/plugin-auth_ui",
   "author": {
-    "name": "Alexander Shepetko",
+    "name": "Oleksandr Shepetko",
     "email": "a@shepetko.com",
     "url": "https://shepetko.com"
   },
   "requires": {
     "pytsite": ">=7.29",
     "plugins": [
-      "auth>=3.5",
+      "auth>=3.6",
       "auth_http>=1.0",
       "auth_http_api>=2.0",
       "assetman>=2.0",

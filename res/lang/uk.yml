@@ -17,6 +17,7 @@ first_name: "Ім'я"
 middle_name: 'По-батькові'
 last_name: 'Прізвище'
 full_name: "Повне ім'я"
+position: 'Посада'
 about_yourself: 'Пара слів про себе'
 email: 'Email'
 password: 'Пароль'

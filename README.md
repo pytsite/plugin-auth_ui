@@ -4,6 +4,11 @@
 ## Changelog
 
 
+### 3.15 (2017-08-10)
+
+Support of `auth-3.6`.
+
+
 ### 3.14.2 (2018-08-08)
 
 Translations fixed.
