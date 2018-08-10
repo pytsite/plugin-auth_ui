@@ -120,10 +120,15 @@ def sign_up_url(driver_name: str = None, add_query: dict = None, add_fragment: s
     })
 
 
-def sign_out_url() -> str:
+def sign_out_url(redirect: str = 'CURRENT_URL') -> str:
     """Get sign out URL
     """
-    return _router.rule_url('auth_ui@sign_out', {'__redirect': _router.current_url()})
+    if redirect == 'CURRENT_URL':
+        redirect = _router.current_url()
+
+    rule_args = {'__redirect': redirect} if redirect else {}
+
+    return _router.rule_url('auth_ui@sign_out', rule_args)
 
 
 def restore_account_form(request: _http.Request = None, driver_name: str = None, **kwargs) -> _form.Form:

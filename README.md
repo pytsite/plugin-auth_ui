@@ -4,6 +4,11 @@
 ## Changelog
 
 
+### 3.16 (2017-08-10)
+
+Added `redirect` argument to `sign_out_url()`.
+
+
 ### 3.15 (2017-08-10)
 
 Support of `auth-3.6`.
