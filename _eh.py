@@ -5,19 +5,7 @@ __email__ = 'a@shepetko.com'
 __license__ = 'MIT'
 
 from pytsite import router as _router, lang as _lang, mail as _mail, tpl as _tpl
-from plugins import auth as _auth, hreflang as _hreflang
-from . import _api
-
-
-def on_router_dispatch():
-    """pytsite.router.dispatch Event Handler
-    """
-    # Alternate languages for sign in page
-    if len(_lang.langs()) > 1:
-        base_path = _api.base_path()
-        if base_path == _router.current_path():
-            for lng in _lang.langs(False):
-                _hreflang.add(lng, _router.url(base_path, lang=lng))
+from plugins import auth as _auth
 
 
 def on_auth_sign_up(user: _auth.AbstractUser):

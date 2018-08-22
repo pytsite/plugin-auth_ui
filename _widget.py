@@ -58,10 +58,10 @@ class UserSelect(_widget.select.Select):
 
         c_user = _auth.get_current_user()
         if not c_user.is_admin:
-            self._items.append((c_user.uid, '{} ({})'.format(c_user.full_name, c_user.login)))
+            self._items.append((c_user.uid, '{} ({})'.format(c_user.first_last_name, c_user.login)))
         else:
             for user in _auth.find_users(_query.Query(_query.Eq('status', 'active')), [('first_name', 1)]):
-                self._items.append((user.uid, '{} ({})'.format(user.full_name, user.login)))
+                self._items.append((user.uid, '{} ({})'.format(user.first_last_name, user.login)))
 
     def set_val(self, value):
         if isinstance(value, _auth.model.AbstractUser):

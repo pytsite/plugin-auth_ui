@@ -4,6 +4,12 @@
 ## Changelog
 
 
+### 3.16.1 (2017-08-22)
+
+- User's `full_name` usage replaced with `first_last_name`.
+- Unnecessary usage of `hreflang` plugin removed.
+
+
 ### 3.16 (2017-08-10)
 
 Added `redirect` argument to `sign_out_url()`.

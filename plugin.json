@@ -1,6 +1,6 @@
 {
   "name": "auth_ui",
-  "version": "3.16",
+  "version": "3.16.1",
   "description": {
     "en": "Auth UI",
     "ru": "Auth UI",
@@ -22,7 +22,6 @@
       "file_ui>=1.4",
       "font_awesome",
       "form>=4.8",
-      "hreflang",
       "http_api>=2.0",
       "query>=1.0",
       "robots_txt",

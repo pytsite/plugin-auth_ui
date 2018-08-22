@@ -145,7 +145,7 @@ class UserProfileView(_routing.Controller):
             raise self.not_found()
 
         self.args['user'] = user
-        _metatag.t_set('title', _lang.t('auth_ui@profile_view_title', {'name': user.full_name}))
+        _metatag.t_set('title', _lang.t('auth_ui@profile_view_title', {'name': user.first_last_name}))
 
         try:
             return _router.call('auth_ui_user_profile_view', self.args)
