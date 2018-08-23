@@ -4,6 +4,11 @@
 ## Changelog
 
 
+### 3.17 (2017-08-23)
+
+Support of `auth-3.8`.
+
+
 ### 3.16.2 (2017-08-23)
 
 Missing function usage fixed.

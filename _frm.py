@@ -374,6 +374,14 @@ class User(_form.Form):
             header=self.t('security'),
         ))
 
+        # User account confirmed
+        if c_user.is_admin and _auth.is_sign_up_confirmation_required():
+            security.append_child(_widget.select.Checkbox(
+                uid='is_confirmed',
+                value=user.is_confirmed if user.is_confirmed else None,
+                label=self.t('user_account_is_confirmed'),
+            ))
+
         # Profile is public
         security.append_child(_widget.select.Checkbox(
             uid='is_public',

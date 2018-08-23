@@ -10,6 +10,7 @@ registration_admin_notify: 'Новый пользователь на {:app_name}
 registration_form_success: 'Учётная запись успешно создана. Дополнительная информация отправлена вам на email.'
 user_status_change_notify: 'Статус вашей учётной записи был изменён'
 profile_is_public: 'Публичный профиль'
+user_account_is_confirmed: 'Email подтверждён'
 this_is_public_profile: 'Мой профиль могут видеть все'
 login: 'Логин'
 nickname: 'Никнейм'
