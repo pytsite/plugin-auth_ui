@@ -448,8 +448,7 @@ class User(_form.Form):
             form_area='footer',
             icon='fa fas fa-fw fa-ban',
             value=self.t('cancel'),
-            href=self.redirect,
-            color='default btn-secondary',
+            href=self.redirect
         ))
 
     def _on_validate(self):

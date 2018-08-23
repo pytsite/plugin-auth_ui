@@ -4,6 +4,11 @@
 ## Changelog
 
 
+### 3.18 (2017-08-23)
+
+Support of `widget-2.12`.
+
+
 ### 3.17 (2017-08-23)
 
 Support of `auth-3.8`.
