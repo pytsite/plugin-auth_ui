@@ -47,9 +47,6 @@ def plugin_load_uwsgi():
     router.handle(_controllers.UserProfileView, bp + '/user/<nickname>', 'auth_ui@user_profile_view')
     router.handle(_controllers.UserProfileModify, bp + '/user/<nickname>/edit', 'auth_ui@user_profile_modify')
 
-    # Router events
-    router.on_dispatch(_eh.on_router_dispatch)
-
     # Auth events
     auth.on_sign_up(_eh.on_auth_sign_up)
     auth.on_user_status_change(_eh.on_auth_user_status_change)

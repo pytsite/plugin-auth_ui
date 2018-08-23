@@ -4,6 +4,11 @@
 ## Changelog
 
 
+### 3.16.2 (2017-08-23)
+
+Missing function usage fixed.
+
+
 ### 3.16.1 (2017-08-22)
 
 - User's `full_name` usage replaced with `first_last_name`.
