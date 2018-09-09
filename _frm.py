@@ -79,9 +79,9 @@ class Role(_form.Form):
             uid='action_cancel',
             weight=100,
             form_area='footer',
-            icon='fa fas fa-ban',
+            icon='fa fas fa-fw fa-ban',
             value=self.t('cancel'),
-            href=self.redirect,
+            href=self.referer or self.redirect or _router.base_url(),
         ))
 
     def _on_submit(self):
@@ -448,7 +448,7 @@ class User(_form.Form):
             form_area='footer',
             icon='fa fas fa-fw fa-ban',
             value=self.t('cancel'),
-            href=self.redirect
+            href=self.referer or self.redirect or _router.base_url(),
         ))
 
     def _on_validate(self):
