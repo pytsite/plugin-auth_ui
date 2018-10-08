@@ -119,7 +119,6 @@ class User(_form.Form):
 
         self.name = 'auth_ui_user'
         self.css += ' auth-ui-form-user'
-        self.assets.extend(['auth_ui@css/form.css'])
         self.area_footer_css += ' text-center'
 
     def _on_setup_widgets(self):
