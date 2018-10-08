@@ -7,7 +7,7 @@ __license__ = 'MIT'
 from typing import Union as _Union, Optional as _Optional
 from pytsite import lang as _lang, http as _http, metatag as _metatag, tpl as _tpl, router as _router, util as _util, \
     routing as _routing
-from plugins import assetman as _assetman, auth as _auth, query as _query
+from plugins import auth as _auth, query as _query
 from . import _api, _frm
 
 
@@ -74,18 +74,9 @@ class Form(_routing.Controller):
         }
 
         try:
-            # Try to call application provided controller
             return _router.call('auth_ui_form', tpl_args)
-
         except _routing.error.RuleNotFound:
-            # Try to render tpl provided by application
-            try:
-                return _tpl.render('auth_ui/form', tpl_args)
-
-            # Render plugin's built-in tpl
-            except _tpl.error.TemplateNotFound:
-                _assetman.preload('auth_ui@css/form.css')
-                return _tpl.render('auth_ui@form', tpl_args)
+            return _tpl.render('auth_ui/form', tpl_args)
 
 
 class SignUpConfirm(_routing.Controller):

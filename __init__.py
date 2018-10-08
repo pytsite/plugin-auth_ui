@@ -12,28 +12,10 @@ from ._api import base_path, register_driver, get_driver, get_drivers, sign_in_f
 from ._driver import Driver
 
 
-def plugin_load():
-    from plugins import assetman
-
-    assetman.register_package(__name__)
-    assetman.t_less(__name__)
-    assetman.t_js(__name__)
-
-
-def plugin_install():
-    from plugins import assetman
-
-    assetman.build(__name__)
-
-
-def plugin_load_uwsgi():
-    from pytsite import router, lang, tpl
+def plugin_load_wsgi():
+    from pytsite import router
     from plugins import robots_txt, auth
     from . import _controllers, _eh
-
-    # Resource packages
-    lang.register_package(__name__)
-    tpl.register_package(__name__)
 
     # Routes
     bp = base_path()

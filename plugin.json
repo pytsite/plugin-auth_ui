@@ -1,6 +1,6 @@
 {
   "name": "auth_ui",
-  "version": "3.19.1",
+  "version": "4.0",
   "description": {
     "en": "Auth UI",
     "ru": "Auth UI",
@@ -13,20 +13,18 @@
     "url": "https://shepetko.com"
   },
   "requires": {
-    "pytsite": ">=7.29",
-    "plugins": [
-      "auth>=3.8",
-      "auth_http>=1.0",
-      "auth_http_api>=2.0",
-      "assetman>=2.0",
-      "file_ui>=1.4",
-      "font_awesome",
-      "form>=4.14",
-      "http_api>=2.0",
-      "query>=1.0",
-      "robots_txt",
-      "twitter_bootstrap",
-      "widget>=2.12"
-    ]
+    "pytsite": "8.x",
+    "plugins": {
+      "assetman": "3.x",
+      "auth": "3.x",
+      "auth_http": "2.x",
+      "auth_http_api": "3.x",
+      "file_ui": "2.x",
+      "form": "5.x",
+      "http_api": "3.x",
+      "query": "1.x",
+      "robots_txt": "1.x",
+      "widget": "3.x"
+    }
   }
 }

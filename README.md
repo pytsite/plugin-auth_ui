@@ -4,6 +4,11 @@
 ## Changelog
 
 
+### 4.0 (2018-10-08)
+
+Support of `pytsite-8.x`.
+
+
 ### 3.19.1 (2018-09-09)
 
 User form fixed.
