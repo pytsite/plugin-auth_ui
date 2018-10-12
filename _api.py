@@ -116,7 +116,7 @@ def sign_up_url(driver_name: str = None, add_query: dict = None, add_fragment: s
     """
     return _router.rule_url('auth_ui@sign_up', {
         'driver': get_driver(driver_name).name,
-        '__redirect': _router.current_url(add_query=add_query, add_fragment=add_fragment)
+        '__redirect': _router.current_url(query=add_query, fragment=add_fragment)
     })
 
 
