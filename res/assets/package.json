@@ -1,0 +1,7 @@
+{
+  "name": "@pytsite/auth-ui-google",
+  "main": "index.js",
+  "dependencies": {
+    "reactstrap": "6.x"
+  }
+}

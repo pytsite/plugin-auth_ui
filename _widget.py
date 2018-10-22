@@ -4,8 +4,9 @@ __author__ = 'Oleksandr Shepetko'
 __email__ = 'a@shepetko.com'
 __license__ = 'MIT'
 
+import json as _json
 from typing import Union as _Union, List as _List, Tuple as _Tuple
-from pytsite import lang as _lang
+from pytsite import lang as _lang, html as _html
 from plugins import widget as _widget, auth as _auth, query as _query
 
 
@@ -80,3 +81,17 @@ class UserSelect(_widget.select.Select):
             value = _auth.get_user(uid=value)
 
         return value
+
+
+class UsersSlots(_widget.Abstract):
+    def __init__(self, uid: str, **kwargs):
+        super().__init__(uid, **kwargs)
+
+        self.data.update({
+            'modal_title': kwargs.get('data_modal_title'),
+            'max_slots': kwargs.get('max_slots', 100),
+            'is_empty_slot_enabled': kwargs.get('is_empty_slot_enabled', False),
+        })
+
+    def _get_element(self, **kwargs) -> _html.Element:
+        return _html.Div(css='widget-component')

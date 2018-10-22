@@ -4,6 +4,14 @@
 ## Changelog
 
 
+### 4.2 (2018-10-22)
+
+- Support of `assetman-5.x` and `widget-4.x`.
+- New React components: `UserPicture`, `UserSearchModal`,
+  `UserSelectSearch`, `UsersSlots`.
+- New widget: `UsersSlots`.
+
+
 ### 4.1 (2018-10-12)
 
 Support of `assetman-4.x`.
