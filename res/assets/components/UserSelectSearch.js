@@ -1,14 +1,14 @@
+import PropTypes from "prop-types";
 import React from 'react';
 import httpApi from "@pytsite/http-api";
 import Select2 from '@pytsite/widget/components/Select2';
-import PropTypes from "prop-types";
 
 export default class UserSelectSearch extends React.Component {
     static propTypes = {
         className: PropTypes.string,
         id: PropTypes.string,
         exclude: PropTypes.object,
-        name: PropTypes.string.isRequired,
+        name: PropTypes.string,
         onSelect: PropTypes.func,
         userTitleFormat: PropTypes.string,
     };
@@ -43,7 +43,13 @@ export default class UserSelectSearch extends React.Component {
             }
         };
 
-        return <Select2 className={`form-control ${this.props.className}`} id={this.props.id} name={this.props.name}
-                        options={options} onSelect={this.props.onSelect}/>
+        return (
+            <Select2 className={`form-control ${this.props.className}`.trim()}
+                     id={this.props.id}
+                     name={this.props.name}
+                     options={options}
+                     onSelect={e => this.props.onSelect && this.props.onSelect(e.target.value)}
+            />
+        )
     }
 }

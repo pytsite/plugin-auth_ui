@@ -1,74 +1,86 @@
-import {lang} from '@pytsite/assetman';
 import PropTypes from 'prop-types';
 import React from 'react';
-import {Button, Form, FormGroup, Modal, ModalHeader, ModalBody, ModalFooter} from 'reactstrap';
+import {Form, FormGroup} from 'reactstrap';
+import {lang} from '@pytsite/assetman';
+import {TwoButtonsModal} from '@pytsite/widget/components';
 import UserSelectSearch from './UserSelectSearch';
 
 
 export default class UserSearchModal extends React.Component {
     static propTypes = {
+        name: PropTypes.string.isRequired,
         className: PropTypes.string,
         exclude: PropTypes.object,
         isOpen: PropTypes.bool,
-        name: PropTypes.string.isRequired,
+        cancelButtonCaption: PropTypes.string,
+        isCancelButtonDisabled: PropTypes.bool,
         okButtonCaption: PropTypes.string,
-        onModalToggle: PropTypes.func,
+        isOkButtonDisabled: PropTypes.bool,
+        onToggle: PropTypes.func,
+        onClickCancel: PropTypes.func,
+        onClickOk: PropTypes.func,
         onUserSelect: PropTypes.func,
+        title: PropTypes.string,
     };
 
     static defaultProps = {
         exclude: [],
         okButtonCaption: lang.t('auth_ui@add'),
+        title: lang.t('auth_ui@select_user'),
     };
 
     constructor(props) {
         super(props);
 
         this.state = {
-            userUid: null, // Selected user
+            userUid: null, // Selected user UID
         };
 
-        this.onUserSelectSearchSelect = this.onUserSelectSearchSelect.bind(this);
-        this.onModalClickOK = this.onModalClickOK.bind(this);
-        this.onModalClickCancel = this.onModalClickCancel.bind(this);
+        this.onClickOk = this.onClickOk.bind(this);
+        this.onClickCancel = this.onClickCancel.bind(this);
     }
 
-    onUserSelectSearchSelect(e) {
-        this.setState({
-            userUid: e.target.value
-        });
-    }
-
-    onModalClickOK() {
-        this.state.userUid && this.props.onUserSelect && this.props.onUserSelect(this.state.userUid);
+    onClickOk() {
+        this.props.onClickOk && this.props.onClickOk(this.state.userUid);
         this.setState({userUid: null});
-        this.props.onModalToggle();
+        this.props.onToggle();
     }
 
-    onModalClickCancel() {
+    onClickCancel() {
+        this.props.onClickCancel && this.props.onClickCancel();
         this.setState({userUid: null});
-        this.props.onModalToggle();
+        this.props.onToggle();
     }
 
     render() {
-        return <Modal isOpen={this.props.isOpen} toggle={this.onModalClickCancel} className={this.props.className}>
-            <ModalHeader toggle={this.onModalClickCancel}>{this.props.title}</ModalHeader>
-            <ModalBody>
+        return (
+            <TwoButtonsModal
+                title={this.props.title}
+                isOpen={this.props.isOpen}
+                onToggle={this.props.onToggle}
+                className={this.props.className}
+                onClickOk={this.onClickOk}
+                onClickCancel={this.onClickCancel}
+                okButtonCaption={this.props.okButtonCaption}
+                cancelButtonCaption={this.props.cancelButtonCaption}
+                isOkButtonDisabled={this.props.isOkButtonDisabled}
+                isCancelButtonDisabled={this.props.isCancelButtonDisabled}
+            >
                 <Form>
                     <FormGroup>
-                        <UserSelectSearch name={this.props.name} onSelect={this.onUserSelectSearchSelect}
-                                          exclude={this.props.exclude}/>
+                        <UserSelectSearch
+                            exclude={this.props.exclude}
+                            name={this.props.name}
+                            onSelect={userUid => {
+                                this.setState({userUid: userUid});
+                                this.props.onUserSelect && this.props.onUserSelect(userUid);
+                            }}
+                        />
                     </FormGroup>
+
+                    {this.props.children}
                 </Form>
-            </ModalBody>
-            <ModalFooter>
-                <Button color="secondary" onClick={this.onModalClickCancel}>
-                    {lang.t('auth_ui@cancel')}
-                </Button>{' '}
-                <Button color="primary" disabled={!this.state.userUid} onClick={this.onModalClickOK}>
-                    {this.props.okButtonCaption}
-                </Button>
-            </ModalFooter>
-        </Modal>
+            </TwoButtonsModal>
+        )
     }
 }

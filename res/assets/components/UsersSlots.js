@@ -5,62 +5,27 @@ import ReactDOM from 'react-dom';
 import {lang} from '@pytsite/assetman';
 import httpApi from '@pytsite/http-api';
 import {Slots} from '@pytsite/widget/components';
-import UserPicture from './UserPicture';
-import UserSearchModal from './UserSearchModal';
-import {Button} from 'reactstrap';
 import setupWidget from "@pytsite/widget";
-
-
-class UserSlot extends React.Component {
-    static propTypes = {
-        className: PropTypes.string,
-        onDeleteButtonClick: PropTypes.func,
-        user: PropTypes.shape({
-            uid: PropTypes.string.isRequired,
-        }).isRequired,
-        userTitleFormat: PropTypes.string,
-    };
-
-    static defaultProps = {
-        className: '',
-        userTitleFormat: '{first_name} {last_name}',
-    };
-
-    formatText(user) {
-        let mask = this.props.userTitleFormat;
-
-        Object.keys(user).map(key => {
-            if (user.hasOwnProperty(key))
-                mask = mask.replace(`{${key}}`, user[key]);
-        });
-
-        return mask;
-    }
-
-    render() {
-        return <div className={`component-auth-ui component-user-slot ${this.props.className}`}>
-            <input type="hidden" name={this.props.name} value={this.props.user.uid}/>
-            <UserPicture user={this.props.user}/>
-            <div className={'user-title'}>
-                {this.formatText(this.props.user)}
-            </div>
-            <div className={'slot-actions'}>
-                <Button size={'sm'} color={'danger'} onClick={() => this.props.onDeleteButtonClick(this.props.user)}>
-                    <i className="fas fa-times"></i>
-                </Button>
-            </div>
-        </div>
-    }
-}
+import UserSlot from './UserSlot';
+import UserSearchModal from './UserSearchModal';
 
 
 export default class UsersSlots extends React.Component {
     static propTypes = {
+        name: PropTypes.string.isRequired,
         className: PropTypes.string,
         isEmptySlotEnabled: PropTypes.bool,
         maxSlots: PropTypes.number,
         modalTitle: PropTypes.string,
-        name: PropTypes.string.isRequired,
+        modalAppendBody: PropTypes.object,
+        modalOkButtonCaption: PropTypes.func,
+        modalCancelButtonCaption: PropTypes.func,
+        isModalOkButtonDisabled: PropTypes.bool,
+        isModalCancelButtonDisabled: PropTypes.bool,
+        onModalClickCancel: PropTypes.func,
+        onUserAdd: PropTypes.func,
+        onModalUserSelect: PropTypes.func,
+        slotContent: PropTypes.func,
         userTitleFormat: PropTypes.string,
         value: PropTypes.arrayOf(PropTypes.string),
     };
@@ -77,12 +42,11 @@ export default class UsersSlots extends React.Component {
 
         this.state = {
             users: {},
-            modalIsOpened: false,
+            isModalOpened: false,
         };
 
-        this.renderSlot = this.renderSlot.bind(this);
-        this.onModalToggle = this.onModalToggle.bind(this);
-        this.onUserSelect = this.onUserSelect.bind(this);
+        this.slotRenderer = this.slotRenderer.bind(this);
+        this.onModalClickOk = this.onModalClickOk.bind(this);
         this.onSlotDeleteButtonClick = this.onSlotDeleteButtonClick.bind(this);
     }
 
@@ -97,16 +61,12 @@ export default class UsersSlots extends React.Component {
         });
     }
 
-    onModalToggle() {
-        this.setState({modalIsOpened: !this.state.modalIsOpened});
-    }
-
     /**
      * Render empty slot
      *
      * @returns {React.Component}
      */
-    renderEmptySlot() {
+    defaultEmptySlotRenderer() {
         return <i className={'fa fas fa-user-plus fa-2x'}></i>;
     }
 
@@ -127,12 +87,19 @@ export default class UsersSlots extends React.Component {
      * @param user
      * @returns {React.Component}
      */
-    renderSlot(user) {
-        return <UserSlot name={this.props.name} user={user} onDeleteButtonClick={this.onSlotDeleteButtonClick}
-                         userTitleFormat={this.props.userTitleFormat}/>
+    slotRenderer(user) {
+        return (
+            <UserSlot
+                content={this.props.slotContent}
+                name={this.props.name}
+                user={user}
+                onDeleteButtonClick={this.onSlotDeleteButtonClick}
+                userTitleFormat={this.props.userTitleFormat}
+            />
+        )
     }
 
-    onUserSelect(userUid) {
+    onModalClickOk(userUid) {
         httpApi.get(`auth/users/${userUid}`).done(user => {
             const users = this.state.users;
             users[user.uid] = user;
@@ -140,24 +107,51 @@ export default class UsersSlots extends React.Component {
             this.setState({
                 users: users
             });
+
+            this.props.onUserAdd && this.props.onUserAdd(user);
         });
     }
 
     render() {
-        return <div className={`component-auth-ui component-users-slots ${this.props.className}`}>
-            <Slots data={this.state.users} isEmptySlotEnabled={this.props.isEmptySlotEnabled}
-                   renderEmptySlot={this.renderEmptySlot} renderSlot={this.renderSlot}
-                   onEmptySlotClick={this.onModalToggle} maxSlots={this.props.maxSlots}/>
+        return (
+            <div className={`component-auth-ui component-users-slots ${this.props.className}`}>
+                <input type="hidden" name={`${this.props.name}[]`}/>
 
-            <UserSearchModal name={this.props.name} isOpen={this.state.modalIsOpened} onModalToggle={this.onModalToggle}
-                             title={this.props.modalTitle} onUserSelect={this.onUserSelect} exclude={this.state.users}/>
-        </div>
+                <Slots
+                    data={this.state.users}
+                    emptySlotRenderer={this.defaultEmptySlotRenderer}
+                    isEmptySlotEnabled={this.props.isEmptySlotEnabled}
+                    maxSlots={this.props.maxSlots}
+                    onEmptySlotClick={() => this.setState({isModalOpened: true})}
+                    slotRenderer={this.slotRenderer}
+                />
+
+                <UserSearchModal
+                    exclude={this.state.users}
+                    isOpen={this.state.isModalOpened}
+                    name={this.props.name}
+                    okButtonCaption={this.props.modalOkButtonCaption}
+                    cancelButtonCaption={this.props.modalCancelButtonCaption}
+                    isOkButtonDisabled={this.props.isModalOkButtonDisabled}
+                    isCancelButtonDisabled={this.props.isModalCancelButtonDisabled}
+                    onToggle={() => this.setState({isModalOpened: !this.state.isModalOpened})}
+                    onClickCancel={this.props.onModalClickCancel}
+                    onClickOk={this.onModalClickOk}
+                    onUserSelect={this.props.onModalUserSelect}
+                    title={this.props.modalTitle}
+                >
+                    {this.props.modalAppendBody}
+                </UserSearchModal>
+            </div>
+        )
     }
 }
 
 setupWidget('plugins.auth_ui._widget.UsersSlots', widget => {
-    const c = <UsersSlots name={widget.uid} isEmptySlotEnabled={widget.data('isEmptySlotEnabled') === 'True'}
-                          maxSlots={widget.data('maxSlots')}/>;
+    const c = <UsersSlots name={widget.uid}
+                          isEmptySlotEnabled={widget.data('isEmptySlotEnabled') === 'True'}
+                          maxSlots={widget.data('maxSlots')}
+    />;
 
     ReactDOM.render(c, widget.find('.widget-component')[0]);
 });

@@ -4,6 +4,11 @@
 ## Changelog
 
 
+### 4.3 (2018-10-28)
+
+React components refactored.
+
+
 ### 4.2.1 (2018-10-23)
 
 User form CSS fixed.
