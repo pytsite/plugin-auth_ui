@@ -91,6 +91,7 @@ class UsersSlots(_widget.Abstract):
             'modal_title': kwargs.get('data_modal_title'),
             'max_slots': kwargs.get('max_slots', 100),
             'is_empty_slot_enabled': kwargs.get('is_empty_slot_enabled', False),
+            'value': _json.dumps([u.uid for u in self.value]),
         })
 
     def _get_element(self, **kwargs) -> _html.Element:

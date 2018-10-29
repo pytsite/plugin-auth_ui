@@ -22,8 +22,9 @@ export default class UsersSlots extends React.Component {
         modalCancelButtonCaption: PropTypes.func,
         isModalOkButtonDisabled: PropTypes.bool,
         isModalCancelButtonDisabled: PropTypes.bool,
-        onModalClickCancel: PropTypes.func,
         onUserAdd: PropTypes.func,
+        onUserDelete: PropTypes.func,
+        onModalCancel: PropTypes.func,
         onModalUserSelect: PropTypes.func,
         slotContent: PropTypes.func,
         userTitleFormat: PropTypes.string,
@@ -71,12 +72,16 @@ export default class UsersSlots extends React.Component {
     }
 
     onSlotDeleteButtonClick(user) {
+        if (this.props.onUserDelete && !this.props.onUserDelete(user))
+            return;
+
         if (confirm(lang.t('auth_ui@confirm_user_deletion'))) {
             const users = {};
             Object.keys(this.state.users).map(uid => {
                 if (uid !== user.uid)
                     users[uid] = this.state.users[uid];
             });
+
             this.setState({users: users});
         }
     }
@@ -135,7 +140,7 @@ export default class UsersSlots extends React.Component {
                     isOkButtonDisabled={this.props.isModalOkButtonDisabled}
                     isCancelButtonDisabled={this.props.isModalCancelButtonDisabled}
                     onToggle={() => this.setState({isModalOpened: !this.state.isModalOpened})}
-                    onClickCancel={this.props.onModalClickCancel}
+                    onClickCancel={this.props.onModalCancel}
                     onClickOk={this.onModalClickOk}
                     onUserSelect={this.props.onModalUserSelect}
                     title={this.props.modalTitle}
@@ -149,6 +154,7 @@ export default class UsersSlots extends React.Component {
 
 setupWidget('plugins.auth_ui._widget.UsersSlots', widget => {
     const c = <UsersSlots name={widget.uid}
+                          value={widget.data('value')}
                           isEmptySlotEnabled={widget.data('isEmptySlotEnabled') === 'True'}
                           maxSlots={widget.data('maxSlots')}
     />;

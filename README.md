@@ -4,6 +4,15 @@
 ## Changelog
 
 
+### 4.4 (2018-10-29)
+
+`UsersSlots` React component and widget:
+
+- new property `onUserDelete` added;
+- widget's value issue fixed;
+- `onModalClickCancel` property renamed to `onModalCancel`.
+
+
 ### 4.3 (2018-10-28)
 
 React components refactored.
