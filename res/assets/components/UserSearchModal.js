@@ -13,9 +13,9 @@ export default class UserSearchModal extends React.Component {
         exclude: PropTypes.object,
         isOpen: PropTypes.bool,
         cancelButtonCaption: PropTypes.string,
-        isCancelButtonDisabled: PropTypes.bool,
+        isCancelButtonDisabled: PropTypes.oneOfType([PropTypes.bool, PropTypes.func]),
         okButtonCaption: PropTypes.string,
-        isOkButtonDisabled: PropTypes.bool,
+        isOkButtonDisabled: PropTypes.oneOfType([PropTypes.bool, PropTypes.func]),
         onToggle: PropTypes.func,
         onClickCancel: PropTypes.func,
         onClickOk: PropTypes.func,
@@ -40,6 +40,10 @@ export default class UserSearchModal extends React.Component {
         this.onClickCancel = this.onClickCancel.bind(this);
     }
 
+    isUserSelected() {
+        return this.state && this.state.userUid;
+    }
+
     onClickOk() {
         this.props.onClickOk && this.props.onClickOk(this.state.userUid);
         this.setState({userUid: null});
@@ -53,6 +57,10 @@ export default class UserSearchModal extends React.Component {
     }
 
     render() {
+        const isOkBtnDisabled = this.props.isOkButtonDisabled !== undefined ?
+            this.props.isOkButtonDisabled :
+            !this.isUserSelected();
+
         return (
             <TwoButtonsModal
                 title={this.props.title}
@@ -63,7 +71,7 @@ export default class UserSearchModal extends React.Component {
                 onClickCancel={this.onClickCancel}
                 okButtonCaption={this.props.okButtonCaption}
                 cancelButtonCaption={this.props.cancelButtonCaption}
-                isOkButtonDisabled={this.props.isOkButtonDisabled}
+                isOkButtonDisabled={isOkBtnDisabled}
                 isCancelButtonDisabled={this.props.isCancelButtonDisabled}
             >
                 <Form>

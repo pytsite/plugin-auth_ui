@@ -7,6 +7,7 @@ export default class UserSlot extends React.Component {
     static propTypes = {
         className: PropTypes.string,
         content: PropTypes.func,
+        enabled: PropTypes.bool,
         name: PropTypes.string,
         onDeleteButtonClick: PropTypes.func,
         user: PropTypes.shape({
@@ -45,18 +46,26 @@ export default class UserSlot extends React.Component {
                 </React.Fragment>
             );
 
+        if (this.props.enabled) {
+            content = (
+                <React.Fragment>
+                    <input type="hidden" name={this.props.name + '[]'} value={this.props.user.uid}/>
+
+                    {content}
+
+                    <div className={'slot-actions'}>
+                        <Button size={'sm'} color={'danger'}
+                                onClick={() => this.props.onDeleteButtonClick && this.props.onDeleteButtonClick(this.props.user)}>
+                            <i className="fas fa-times"></i>
+                        </Button>
+                    </div>
+                </React.Fragment>
+            )
+        }
+
         return (
             <div className={`component-auth-ui component-user-slot ${this.props.className}`}>
-                <input type="hidden" name={this.props.name + '[]'} value={this.props.user.uid}/>
-
                 {content}
-
-                <div className={'slot-actions'}>
-                    <Button size={'sm'} color={'danger'}
-                            onClick={() => this.props.onDeleteButtonClick && this.props.onDeleteButtonClick(this.props.user)}>
-                        <i className="fas fa-times"></i>
-                    </Button>
-                </div>
             </div>
         )
     }

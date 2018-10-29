@@ -4,6 +4,13 @@
 ## Changelog
 
 
+### 4.5 (2018-10-29)
+
+- Support of `widget-4.2`.
+- `widget.UsersSlots`'s `is_empty_slot_enabled` kwarg renamed to
+  `enabled`.
+
+
 ### 4.4 (2018-10-29)
 
 `UsersSlots` React component and widget:

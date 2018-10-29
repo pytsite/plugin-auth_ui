@@ -90,7 +90,7 @@ class UsersSlots(_widget.Abstract):
         self.data.update({
             'modal_title': kwargs.get('data_modal_title'),
             'max_slots': kwargs.get('max_slots', 100),
-            'is_empty_slot_enabled': kwargs.get('is_empty_slot_enabled', False),
+            'enabled': kwargs.get('enabled', False),
             'value': _json.dumps([u.uid for u in self.value]),
         })
 

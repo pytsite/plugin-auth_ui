@@ -14,13 +14,13 @@ export default class UsersSlots extends React.Component {
     static propTypes = {
         name: PropTypes.string.isRequired,
         className: PropTypes.string,
-        isEmptySlotEnabled: PropTypes.bool,
+        enabled: PropTypes.bool,
         maxSlots: PropTypes.number,
         modalTitle: PropTypes.string,
         modalAppendBody: PropTypes.object,
         modalOkButtonCaption: PropTypes.func,
         modalCancelButtonCaption: PropTypes.func,
-        isModalOkButtonDisabled: PropTypes.bool,
+        isModalOkButtonDisabled: PropTypes.oneOfType([PropTypes.bool, PropTypes.func]),
         isModalCancelButtonDisabled: PropTypes.bool,
         onUserAdd: PropTypes.func,
         onUserDelete: PropTypes.func,
@@ -33,7 +33,7 @@ export default class UsersSlots extends React.Component {
 
     static defaultProps = {
         className: '',
-        isEmptySlotEnabled: false,
+        enabled: false,
         maxSlots: 100,
         modalTitle: lang.t('auth_ui@select_user'),
     };
@@ -95,6 +95,7 @@ export default class UsersSlots extends React.Component {
     slotRenderer(user) {
         return (
             <UserSlot
+                enabled={this.props.enabled}
                 content={this.props.slotContent}
                 name={this.props.name}
                 user={user}
@@ -125,7 +126,7 @@ export default class UsersSlots extends React.Component {
                 <Slots
                     data={this.state.users}
                     emptySlotRenderer={this.defaultEmptySlotRenderer}
-                    isEmptySlotEnabled={this.props.isEmptySlotEnabled}
+                    enabled={this.props.enabled}
                     maxSlots={this.props.maxSlots}
                     onEmptySlotClick={() => this.setState({isModalOpened: true})}
                     slotRenderer={this.slotRenderer}
@@ -155,7 +156,7 @@ export default class UsersSlots extends React.Component {
 setupWidget('plugins.auth_ui._widget.UsersSlots', widget => {
     const c = <UsersSlots name={widget.uid}
                           value={widget.data('value')}
-                          isEmptySlotEnabled={widget.data('isEmptySlotEnabled') === 'True'}
+                          enabled={widget.data('enabled') === 'True'}
                           maxSlots={widget.data('maxSlots')}
     />;
 
