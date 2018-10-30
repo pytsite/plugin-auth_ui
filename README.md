@@ -4,6 +4,11 @@
 ## Changelog
 
 
+### 4.5.1 (2018-10-30)
+
+`UsersSlots` widget's arguments processing fixed.
+
+
 ### 4.5 (2018-10-29)
 
 - Support of `widget-4.2`.

@@ -87,12 +87,18 @@ class UsersSlots(_widget.Abstract):
     def __init__(self, uid: str, **kwargs):
         super().__init__(uid, **kwargs)
 
-        self.data.update({
-            'modal_title': kwargs.get('data_modal_title'),
-            'max_slots': kwargs.get('max_slots', 100),
-            'enabled': kwargs.get('enabled', False),
-            'value': _json.dumps([u.uid for u in self.value]),
-        })
+        self._max_slots = kwargs.get('max_slots', 100)
+        self._modal_title = kwargs.get('modal_title', _lang.t('auth_ui@select_user'))
+        self._modal_ok_button_caption = kwargs.get('modal_ok_button_caption', _lang.t('auth_ui@add'))
+        self._modal_cancel_button_caption = kwargs.get('modal_cancel_button_caption')
 
     def _get_element(self, **kwargs) -> _html.Element:
+        self.data.update({
+            'value': _json.dumps([u.uid for u in self.value]),
+            'max_slots': self._max_slots,
+            'modal_title': self._modal_title,
+            'modal_ok_button_caption': self._modal_ok_button_caption,
+            'modal_cancel_button_caption': self._modal_cancel_button_caption,
+        })
+
         return _html.Div(css='widget-component')

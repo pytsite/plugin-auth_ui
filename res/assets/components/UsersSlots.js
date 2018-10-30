@@ -158,6 +158,9 @@ setupWidget('plugins.auth_ui._widget.UsersSlots', widget => {
                           value={widget.data('value')}
                           enabled={widget.data('enabled') === 'True'}
                           maxSlots={widget.data('maxSlots')}
+                          modalTitle={widget.data('modalTitle')}
+                          modalOkButtonCaption={widget.data('modalOkButtonCaption')}
+                          modalCancelButtonCaption={widget.data('modalCancelButtonCaption')}
     />;
 
     ReactDOM.render(c, widget.find('.widget-component')[0]);
