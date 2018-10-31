@@ -4,6 +4,15 @@
 ## Changelog
 
 
+### 4.6 (2018-10-31)
+
+New properties in React components:
+
+- `UserSelectSearch.placeholder`;
+- `UserSearchModal.userSelectPlaceholder`;
+- `UsersSlots.modalUserSelectPlaceholder`.
+
+
 ### 4.5.1 (2018-10-30)
 
 `UsersSlots` widget's arguments processing fixed.

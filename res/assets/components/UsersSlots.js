@@ -22,6 +22,7 @@ export default class UsersSlots extends React.Component {
         modalCancelButtonCaption: PropTypes.func,
         isModalOkButtonDisabled: PropTypes.oneOfType([PropTypes.bool, PropTypes.func]),
         isModalCancelButtonDisabled: PropTypes.bool,
+        modalUserSelectPlaceholder: PropTypes.string,
         onUserAdd: PropTypes.func,
         onUserDelete: PropTypes.func,
         onModalCancel: PropTypes.func,
@@ -36,6 +37,7 @@ export default class UsersSlots extends React.Component {
         enabled: false,
         maxSlots: 100,
         modalTitle: lang.t('auth_ui@select_user'),
+        modalUserSelectPlaceholder: lang.t('auth_ui@user'),
     };
 
     constructor(props) {
@@ -144,6 +146,7 @@ export default class UsersSlots extends React.Component {
                     onClickCancel={this.props.onModalCancel}
                     onClickOk={this.onModalClickOk}
                     onUserSelect={this.props.onModalUserSelect}
+                    userSelectPlaceholder={this.props.modalUserSelectPlaceholder}
                     title={this.props.modalTitle}
                 >
                     {this.props.modalAppendBody}

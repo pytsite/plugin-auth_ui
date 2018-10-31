@@ -1,5 +1,6 @@
 import PropTypes from "prop-types";
 import React from 'react';
+import {lang} from '@pytsite/assetman';
 import httpApi from "@pytsite/http-api";
 import Select2 from '@pytsite/widget/components/Select2';
 
@@ -10,12 +11,14 @@ export default class UserSelectSearch extends React.Component {
         exclude: PropTypes.object,
         name: PropTypes.string,
         onSelect: PropTypes.func,
+        placeholder: PropTypes.string,
         userTitleFormat: PropTypes.string,
     };
 
     static defaultProps = {
         className: '',
         exclude: {},
+        placeholder: lang.t('auth_ui@user'),
         userTitleFormat: '{first_name} {last_name}'
     };
 
@@ -32,6 +35,7 @@ export default class UserSelectSearch extends React.Component {
 
     render() {
         const options = {
+            placeholder: this.props.placeholder,
             ajax: {
                 url: httpApi.url('auth/users', {exclude: JSON.stringify(Object.keys(this.props.exclude))}),
                 dataType: 'json',

@@ -21,12 +21,14 @@ export default class UserSearchModal extends React.Component {
         onClickOk: PropTypes.func,
         onUserSelect: PropTypes.func,
         title: PropTypes.string,
+        userSelectPlaceholder: PropTypes.string,
     };
 
     static defaultProps = {
         exclude: [],
         okButtonCaption: lang.t('auth_ui@add'),
         title: lang.t('auth_ui@select_user'),
+        userSelectPlaceholder: lang.t('auth_ui@user'),
     };
 
     constructor(props) {
@@ -79,6 +81,7 @@ export default class UserSearchModal extends React.Component {
                         <UserSelectSearch
                             exclude={this.props.exclude}
                             name={this.props.name}
+                            placeholder={this.props.userSelectPlaceholder}
                             onSelect={userUid => {
                                 this.setState({userUid: userUid});
                                 this.props.onUserSelect && this.props.onUserSelect(userUid);
