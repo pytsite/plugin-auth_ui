@@ -38,3 +38,8 @@ def on_auth_user_status_change(user: _auth.AbstractUser, status: str):
             'status': status,
         })
         _mail.Message(user.login, _lang.t('auth_ui@user_status_change_notify'), msg).send()
+
+
+def on_auth_user_as_jsonable(user: _auth.AbstractUser, data: dict):
+    if user.is_public:
+        data['url'] = _router.rule_url('auth_ui@user_profile_view', {'nickname': user.nickname})

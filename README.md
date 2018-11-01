@@ -4,6 +4,11 @@
 ## Changelog
 
 
+### 4.7 (2018-11-01)
+
+New field `url` added to `auth.AbstractUser.as_jsonable()` response.
+
+
 ### 4.6 (2018-10-31)
 
 New properties in React components:

@@ -1,6 +1,6 @@
 {
   "name": "auth_ui",
-  "version": "4.6",
+  "version": "4.7",
   "description": {
     "en": "Auth UI",
     "ru": "Auth UI",
@@ -16,7 +16,7 @@
     "pytsite": ">=8",
     "plugins": {
       "assetman": "5.x",
-      "auth": "3.x",
+      "auth": ">=3.12<4",
       "auth_http": "2.x",
       "auth_http_api": "3.x",
       "file_ui": "2.x",
