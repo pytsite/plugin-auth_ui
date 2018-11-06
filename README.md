@@ -4,6 +4,11 @@
 ## Changelog
 
 
+### 4.8.1 (2018-11-06)
+
+`plugin.json` fixed.
+
+
 ### 4.8 (2018-11-06)
 
 Basic editing functionality added to `UsersSlots` React component.
