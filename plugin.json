@@ -24,7 +24,7 @@
       "http_api": "3.x",
       "query": "1.x",
       "robots_txt": "1.x",
-      "widget": ">=4.2<5"
+      "widget": ">=4.5<5"
     }
   }
 }

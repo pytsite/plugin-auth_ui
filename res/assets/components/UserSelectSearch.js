@@ -13,6 +13,7 @@ export default class UserSelectSearch extends React.Component {
         onSelect: PropTypes.func,
         placeholder: PropTypes.string,
         userTitleFormat: PropTypes.string,
+        value: PropTypes.string,
     };
 
     static defaultProps = {
@@ -21,6 +22,14 @@ export default class UserSelectSearch extends React.Component {
         placeholder: lang.t('auth_ui@user'),
         userTitleFormat: '{first_name} {last_name}'
     };
+
+    constructor(props) {
+        super(props);
+
+        this.getUsersUrl = 'auth/users';
+
+        this.onSelectReady = this.onSelectReady.bind(this);
+    }
 
     formatText(user) {
         let mask = this.props.userTitleFormat;
@@ -33,18 +42,33 @@ export default class UserSelectSearch extends React.Component {
         return mask;
     }
 
+    onSelectReady(select2) {
+        if (this.props.value) {
+            httpApi.get(this.getUsersUrl, {uids: JSON.stringify([this.props.value])}).done(d => {
+                if (d) {
+                    select2.append(new Option(this.formatText(d[0]), d[0].uid, false, false));
+                    select2.trigger('change').trigger('select2:select');
+                }
+            })
+        }
+    }
+
     render() {
+        const ajaxUrlQuery = {
+            exclude: JSON.stringify(Object.keys(this.props.exclude))
+        };
+
         const options = {
             placeholder: this.props.placeholder,
             ajax: {
-                url: httpApi.url('auth/users', {exclude: JSON.stringify(Object.keys(this.props.exclude))}),
+                url: httpApi.url(this.getUsersUrl, ajaxUrlQuery),
                 dataType: 'json',
                 cache: true,
                 delay: 500,
                 processResults: data => ({
                     results: data.map(user => ({id: user.uid, text: this.formatText(user)}))
                 })
-            }
+            },
         };
 
         return (
@@ -52,6 +76,7 @@ export default class UserSelectSearch extends React.Component {
                      id={this.props.id}
                      name={this.props.name}
                      options={options}
+                     onReady={this.onSelectReady}
                      onSelect={e => this.props.onSelect && this.props.onSelect(e.target.value)}
             />
         )

@@ -46,10 +46,15 @@ export default class UsersSlots extends React.Component {
         this.state = {
             users: {},
             isModalOpened: false,
+            modalSelectedUserUid: null,
+            userToReplaceUid: null,
         };
 
         this.slotRenderer = this.slotRenderer.bind(this);
         this.onModalClickOk = this.onModalClickOk.bind(this);
+        this.onModalClickCancel = this.onModalClickCancel.bind(this);
+        this.onModalUserSelect = this.onModalUserSelect.bind(this);
+        this.onSlotClick = this.onSlotClick.bind(this);
         this.onSlotDeleteButtonClick = this.onSlotDeleteButtonClick.bind(this);
     }
 
@@ -84,7 +89,10 @@ export default class UsersSlots extends React.Component {
                     users[uid] = this.state.users[uid];
             });
 
-            this.setState({users: users});
+            this.setState({
+                users: users,
+                modalSelectedUserUid: null,
+            });
         }
     }
 
@@ -107,9 +115,13 @@ export default class UsersSlots extends React.Component {
         )
     }
 
-    onModalClickOk(userUid) {
-        httpApi.get(`auth/users/${userUid}`).done(user => {
+    onModalClickOk() {
+        httpApi.get(`auth/users/${this.state.modalSelectedUserUid}`).done(user => {
             const users = this.state.users;
+
+            if (this.state.userToReplaceUid)
+                delete users[this.state.userToReplaceUid];
+
             users[user.uid] = user;
 
             this.setState({
@@ -117,7 +129,37 @@ export default class UsersSlots extends React.Component {
             });
 
             this.props.onUserAdd && this.props.onUserAdd(user);
+
+            this.setState({
+                modalSelectedUserUid: null,
+                userToReplaceUid: null,
+            });
         });
+    }
+
+    onModalClickCancel() {
+        this.setState({
+            userToReplaceUid: null,
+            modalSelectedUserUid: null,
+        });
+
+        this.props.onModalCancel && this.props.onModalCancel();
+    }
+
+    onSlotClick(userUid) {
+        this.setState({
+            userToReplaceUid: userUid,
+            modalSelectedUserUid: userUid,
+            isModalOpened: true,
+        });
+    }
+
+    onModalUserSelect(userUid) {
+        this.setState({
+            modalSelectedUserUid: userUid,
+        });
+
+        this.props.onModalUserSelect && this.props.onModalUserSelect(userUid);
     }
 
     render() {
@@ -130,22 +172,24 @@ export default class UsersSlots extends React.Component {
                     emptySlotRenderer={this.defaultEmptySlotRenderer}
                     enabled={this.props.enabled}
                     maxSlots={this.props.maxSlots}
+                    onSlotClick={this.props.enabled && this.onSlotClick}
                     onEmptySlotClick={() => this.setState({isModalOpened: true})}
                     slotRenderer={this.slotRenderer}
                 />
 
                 <UserSearchModal
+                    selectedUserUid={this.state.modalSelectedUserUid}
                     exclude={this.state.users}
                     isOpen={this.state.isModalOpened}
                     name={this.props.name}
                     okButtonCaption={this.props.modalOkButtonCaption}
                     cancelButtonCaption={this.props.modalCancelButtonCaption}
-                    isOkButtonDisabled={this.props.isModalOkButtonDisabled}
+                    isOkButtonDisabled={this.props.isModalOkButtonDisabled || (() => !this.state.modalSelectedUserUid)}
                     isCancelButtonDisabled={this.props.isModalCancelButtonDisabled}
                     onToggle={() => this.setState({isModalOpened: !this.state.isModalOpened})}
-                    onClickCancel={this.props.onModalCancel}
+                    onClickCancel={this.onModalClickCancel}
                     onClickOk={this.onModalClickOk}
-                    onUserSelect={this.props.onModalUserSelect}
+                    onUserSelect={this.onModalUserSelect}
                     userSelectPlaceholder={this.props.modalUserSelectPlaceholder}
                     title={this.props.modalTitle}
                 >

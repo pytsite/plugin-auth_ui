@@ -55,7 +55,10 @@ export default class UserSlot extends React.Component {
 
                     <div className={'slot-actions'}>
                         <Button size={'sm'} color={'danger'}
-                                onClick={() => this.props.onDeleteButtonClick && this.props.onDeleteButtonClick(this.props.user)}>
+                                onClick={(e) => {
+                                    e.stopPropagation();
+                                    this.props.onDeleteButtonClick && this.props.onDeleteButtonClick(this.props.user)
+                                }}>
                             <i className="fas fa-times"></i>
                         </Button>
                     </div>

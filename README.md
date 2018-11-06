@@ -4,6 +4,11 @@
 ## Changelog
 
 
+### 4.8 (2018-11-06)
+
+Basic editing functionality added to `UsersSlots` React component.
+
+
 ### 4.7 (2018-11-01)
 
 New field `url` added to `auth.AbstractUser.as_jsonable()` response.

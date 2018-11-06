@@ -8,7 +8,7 @@ import UserSelectSearch from './UserSelectSearch';
 
 export default class UserSearchModal extends React.Component {
     static propTypes = {
-        name: PropTypes.string.isRequired,
+        name: PropTypes.string,
         className: PropTypes.string,
         exclude: PropTypes.object,
         isOpen: PropTypes.bool,
@@ -20,6 +20,7 @@ export default class UserSearchModal extends React.Component {
         onClickCancel: PropTypes.func,
         onClickOk: PropTypes.func,
         onUserSelect: PropTypes.func,
+        selectedUserUid: PropTypes.string,
         title: PropTypes.string,
         userSelectPlaceholder: PropTypes.string,
     };
@@ -34,35 +35,21 @@ export default class UserSearchModal extends React.Component {
     constructor(props) {
         super(props);
 
-        this.state = {
-            userUid: null, // Selected user UID
-        };
-
         this.onClickOk = this.onClickOk.bind(this);
         this.onClickCancel = this.onClickCancel.bind(this);
     }
 
-    isUserSelected() {
-        return this.state && this.state.userUid;
-    }
-
     onClickOk() {
-        this.props.onClickOk && this.props.onClickOk(this.state.userUid);
-        this.setState({userUid: null});
+        this.props.onClickOk && this.props.onClickOk();
         this.props.onToggle();
     }
 
     onClickCancel() {
         this.props.onClickCancel && this.props.onClickCancel();
-        this.setState({userUid: null});
         this.props.onToggle();
     }
 
     render() {
-        const isOkBtnDisabled = this.props.isOkButtonDisabled !== undefined ?
-            this.props.isOkButtonDisabled :
-            !this.isUserSelected();
-
         return (
             <TwoButtonsModal
                 title={this.props.title}
@@ -73,19 +60,17 @@ export default class UserSearchModal extends React.Component {
                 onClickCancel={this.onClickCancel}
                 okButtonCaption={this.props.okButtonCaption}
                 cancelButtonCaption={this.props.cancelButtonCaption}
-                isOkButtonDisabled={isOkBtnDisabled}
+                isOkButtonDisabled={this.props.isOkButtonDisabled}
                 isCancelButtonDisabled={this.props.isCancelButtonDisabled}
             >
                 <Form>
                     <FormGroup>
                         <UserSelectSearch
+                            value={this.props.selectedUserUid}
                             exclude={this.props.exclude}
                             name={this.props.name}
                             placeholder={this.props.userSelectPlaceholder}
-                            onSelect={userUid => {
-                                this.setState({userUid: userUid});
-                                this.props.onUserSelect && this.props.onUserSelect(userUid);
-                            }}
+                            onSelect={this.props.onUserSelect}
                         />
                     </FormGroup>
 
