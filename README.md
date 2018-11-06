@@ -4,6 +4,12 @@
 ## Changelog
 
 
+### 4.8.2 (2018-11-06)
+
+Handling of `onSlotClick` property of React component `UsersSlots`
+fixed.
+
+
 ### 4.8.1 (2018-11-06)
 
 `plugin.json` fixed.

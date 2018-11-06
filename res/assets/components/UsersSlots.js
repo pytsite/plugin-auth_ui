@@ -27,6 +27,7 @@ export default class UsersSlots extends React.Component {
         onUserDelete: PropTypes.func,
         onModalCancel: PropTypes.func,
         onModalUserSelect: PropTypes.func,
+        onSlotClick: PropTypes.func,
         slotContent: PropTypes.func,
         userTitleFormat: PropTypes.string,
         value: PropTypes.arrayOf(PropTypes.string),
@@ -152,6 +153,8 @@ export default class UsersSlots extends React.Component {
             modalSelectedUserUid: userUid,
             isModalOpened: true,
         });
+
+        this.props.onSlotClick && this.props.onSlotClick(userUid);
     }
 
     onModalUserSelect(userUid) {
@@ -172,7 +175,7 @@ export default class UsersSlots extends React.Component {
                     emptySlotRenderer={this.defaultEmptySlotRenderer}
                     enabled={this.props.enabled}
                     maxSlots={this.props.maxSlots}
-                    onSlotClick={this.props.enabled && this.onSlotClick}
+                    onSlotClick={this.props.enabled ? this.onSlotClick : null}
                     onEmptySlotClick={() => this.setState({isModalOpened: true})}
                     slotRenderer={this.slotRenderer}
                 />
