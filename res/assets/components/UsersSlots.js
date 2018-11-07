@@ -18,8 +18,8 @@ export default class UsersSlots extends React.Component {
         maxSlots: PropTypes.number,
         modalTitle: PropTypes.string,
         modalAppendBody: PropTypes.object,
-        modalOkButtonCaption: PropTypes.func,
-        modalCancelButtonCaption: PropTypes.func,
+        modalOkButtonCaption: PropTypes.string,
+        modalCancelButtonCaption: PropTypes.string,
         isModalOkButtonDisabled: PropTypes.oneOfType([PropTypes.bool, PropTypes.func]),
         isModalCancelButtonDisabled: PropTypes.bool,
         modalUserSelectPlaceholder: PropTypes.string,
@@ -27,6 +27,7 @@ export default class UsersSlots extends React.Component {
         onUserDelete: PropTypes.func,
         onModalCancel: PropTypes.func,
         onModalUserSelect: PropTypes.func,
+        onEmptySlotClick: PropTypes.func,
         onSlotClick: PropTypes.func,
         slotContent: PropTypes.func,
         userTitleFormat: PropTypes.string,
@@ -55,6 +56,7 @@ export default class UsersSlots extends React.Component {
         this.onModalClickOk = this.onModalClickOk.bind(this);
         this.onModalClickCancel = this.onModalClickCancel.bind(this);
         this.onModalUserSelect = this.onModalUserSelect.bind(this);
+        this.onEmptySlotClick = this.onEmptySlotClick.bind(this);
         this.onSlotClick = this.onSlotClick.bind(this);
         this.onSlotDeleteButtonClick = this.onSlotDeleteButtonClick.bind(this);
     }
@@ -92,7 +94,6 @@ export default class UsersSlots extends React.Component {
 
             this.setState({
                 users: users,
-                modalSelectedUserUid: null,
             });
         }
     }
@@ -130,21 +131,21 @@ export default class UsersSlots extends React.Component {
             });
 
             this.props.onUserAdd && this.props.onUserAdd(user);
-
-            this.setState({
-                modalSelectedUserUid: null,
-                userToReplaceUid: null,
-            });
         });
     }
 
     onModalClickCancel() {
+        this.props.onModalCancel && this.props.onModalCancel();
+    }
+
+    onEmptySlotClick() {
         this.setState({
-            userToReplaceUid: null,
+            isModalOpened: true,
             modalSelectedUserUid: null,
+            userToReplaceUid: null,
         });
 
-        this.props.onModalCancel && this.props.onModalCancel();
+        this.props.onEmptySlotClick && this.props.onEmptySlotClick();
     }
 
     onSlotClick(userUid) {
@@ -176,7 +177,7 @@ export default class UsersSlots extends React.Component {
                     enabled={this.props.enabled}
                     maxSlots={this.props.maxSlots}
                     onSlotClick={this.props.enabled ? this.onSlotClick : null}
-                    onEmptySlotClick={() => this.setState({isModalOpened: true})}
+                    onEmptySlotClick={this.onEmptySlotClick}
                     slotRenderer={this.slotRenderer}
                 />
 
