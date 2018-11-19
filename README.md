@@ -4,6 +4,12 @@
 ## Changelog
 
 
+### 4.9 (2018-11-19)
+
+- New API functions: `role_form()`, `user_form()`.
+- New configuration parameters: `auth_ui.*_form_class`.
+
+
 ### 4.8.3 (2018-11-06)
 
 `UsersSlots` React component fixed.

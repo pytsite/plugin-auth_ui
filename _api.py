@@ -6,9 +6,9 @@ __license__ = 'MIT'
 
 from typing import Dict as _Dict, Union as _Union
 from collections import OrderedDict as _OrderedDict
-from pytsite import router as _router, lang as _lang, reg as _reg, http as _http
+from pytsite import router as _router, lang as _lang, reg as _reg, http as _http, util as _util
 from plugins import form as _form, http_api as _http_api
-from . import _error
+from . import _error, _frm
 from ._driver import Driver as _Driver
 
 _drivers = _OrderedDict()  # type: _Dict[str, _Driver]
@@ -147,3 +147,19 @@ def restore_account_form(request: _http.Request = None, driver_name: str = None,
         form.title = _lang.t('auth_ui@restore_account')
 
     return form
+
+
+def role_form(request: _http.Request = None, role_uid: str = None) -> _form.Form:
+    """Get role edit form
+    """
+    form_cls = _util.get_module_attr(_reg.get('auth_ui.role_form_class', 'plugins.auth_ui._frm.Role'))
+
+    return form_cls(request or _router.request(), role_uid=role_uid)
+
+
+def user_form(request: _http.Request = None, user_uid: str = None) -> _form.Form:
+    """Get user edit form
+    """
+    form_cls = _util.get_module_attr(_reg.get('auth_ui.user_form_class', 'plugins.auth_ui._frm.User'))
+    
+    return form_cls(request or _router.request(), user_uid=user_uid)
