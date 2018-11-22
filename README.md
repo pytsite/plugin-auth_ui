@@ -4,6 +4,11 @@
 ## Changelog
 
 
+### 4.10 (2018-11-22)
+
+Support of `http_api-3.3`.
+
+
 ### 4.9 (2018-11-19)
 
 - New API functions: `role_form()`, `user_form()`.

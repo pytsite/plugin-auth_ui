@@ -1,6 +1,6 @@
 {
   "name": "auth_ui",
-  "version": "4.9",
+  "version": "4.10",
   "description": {
     "en": "Auth UI",
     "ru": "Auth UI",
@@ -21,7 +21,7 @@
       "auth_http_api": "3.x",
       "file_ui": "2.x",
       "form": "5.x",
-      "http_api": "3.x",
+      "http_api": ">=3.3<4",
       "query": "1.x",
       "robots_txt": "1.x",
       "widget": ">=4.5<5"

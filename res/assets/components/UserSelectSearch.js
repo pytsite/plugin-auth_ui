@@ -44,7 +44,7 @@ export default class UserSelectSearch extends React.Component {
 
     onSelectReady(select2) {
         if (this.props.value) {
-            httpApi.get(this.getUsersUrl, {uids: JSON.stringify([this.props.value])}).done(d => {
+            httpApi.get(this.getUsersUrl, {uids: JSON.stringify([this.props.value])}).then(d => {
                 if (d) {
                     select2.append(new Option(this.formatText(d[0]), d[0].uid, false, false));
                     select2.trigger('change').trigger('select2:select');

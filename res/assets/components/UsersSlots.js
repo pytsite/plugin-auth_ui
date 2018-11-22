@@ -62,7 +62,7 @@ export default class UsersSlots extends React.Component {
     }
 
     componentDidMount() {
-        httpApi.get('auth/users', {uids: JSON.stringify(this.props.value)}).done(data => {
+        httpApi.get('auth/users', {uids: JSON.stringify(this.props.value)}).then(data => {
             const users = {};
             data.map(user => users[user.uid] = user);
 
@@ -118,7 +118,7 @@ export default class UsersSlots extends React.Component {
     }
 
     onModalClickOk() {
-        httpApi.get(`auth/users/${this.state.modalSelectedUserUid}`).done(user => {
+        httpApi.get(`auth/users/${this.state.modalSelectedUserUid}`).then(user => {
             const users = this.state.users;
 
             if (this.state.userToReplaceUid)
