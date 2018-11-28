@@ -155,7 +155,7 @@ class UserProfileModify(_routing.Controller):
 
     def exec(self) -> str:
         try:
-            self.args['form'] = _frm.User(self.request, user_uid=_auth.get_user(nickname=self.arg('nickname')).uid)
+            self.args['form'] = _api.user_form(self.request, _auth.get_user(nickname=self.arg('nickname')).uid)
         except _auth.error.UserNotFound:
             raise self.not_found()
 

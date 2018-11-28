@@ -4,6 +4,11 @@
 ## Changelog
 
 
+### 4.10.1 (2018-11-28)
+
+`UserProfileModify` controller fixed.
+
+
 ### 4.10 (2018-11-22)
 
 Support of `http_api-3.3`.
