@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
 import React from 'react';
-import {lang} from '@pytsite/assetman';
+import assetman, {lang} from '@pytsite/assetman';
 import httpApi from "@pytsite/http-api";
 import Select2 from '@pytsite/widget/components/Select2';
 
@@ -26,7 +26,7 @@ export default class UserSelectSearch extends React.Component {
     constructor(props) {
         super(props);
 
-        this.getUsersUrl = 'auth/users';
+        this.getUsersEndpoint = 'auth/users';
 
         this.onSelectReady = this.onSelectReady.bind(this);
     }
@@ -44,7 +44,7 @@ export default class UserSelectSearch extends React.Component {
 
     onSelectReady(select2) {
         if (this.props.value) {
-            httpApi.get(this.getUsersUrl, {uids: JSON.stringify([this.props.value])}).then(d => {
+            httpApi.get(this.getUsersEndpoint, {uids: JSON.stringify([this.props.value])}).then(d => {
                 if (d) {
                     select2.append(new Option(this.formatText(d[0]), d[0].uid, false, false));
                     select2.trigger('change').trigger('select2:select');
@@ -61,7 +61,7 @@ export default class UserSelectSearch extends React.Component {
         const options = {
             placeholder: this.props.placeholder,
             ajax: {
-                url: httpApi.url(this.getUsersUrl, ajaxUrlQuery),
+                url: assetman.url(`api/${this.getUsersEndpoint}`, ajaxUrlQuery),
                 dataType: 'json',
                 cache: true,
                 delay: 500,

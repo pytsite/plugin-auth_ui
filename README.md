@@ -4,6 +4,11 @@
 ## Changelog
 
 
+### 4.10.2 (2018-12-02)
+
+Error in `UserSelectSearch` React component fixed.
+
+
 ### 4.10.1 (2018-11-28)
 
 `UserProfileModify` controller fixed.
