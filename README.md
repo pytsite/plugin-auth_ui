@@ -4,6 +4,11 @@
 ## Changelog
 
 
+### 4.10.3 (2018-12-13)
+
+`UserSelectSearch` component behaviour fixed.
+
+
 ### 4.10.2 (2018-12-02)
 
 Error in `UserSelectSearch` React component fixed.

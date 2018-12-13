@@ -64,11 +64,12 @@ export default class UserSelectSearch extends React.Component {
                 url: assetman.url(`api/${this.getUsersEndpoint}`, ajaxUrlQuery),
                 dataType: 'json',
                 cache: true,
-                delay: 500,
+                delay: 250,
                 processResults: data => ({
                     results: data.map(user => ({id: user.uid, text: this.formatText(user)}))
                 })
             },
+            minimumInputLength: 1,
         };
 
         return (
