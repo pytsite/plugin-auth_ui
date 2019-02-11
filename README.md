@@ -4,6 +4,11 @@
 ## Changelog
 
 
+### 4.10.4 (2019-02-11)
+
+`reactstrap`dependency updated.
+
+
 ### 4.10.3 (2018-12-13)
 
 `UserSelectSearch` component behaviour fixed.
