@@ -78,8 +78,8 @@ def sign_in_form(request: _http.Request = None, driver_name: str = None, **kwarg
     return form
 
 
-def sign_in_url(driver_name: str = None, redirect: _Union[str, bool] = False, add_query: dict = None,
-                add_fragment: str = None) -> str:
+def sign_in_url(driver_name: str = None, redirect: str = 'CURRENT_URL', add_query: dict = None,
+                add_fragment: str = '') -> str:
     """Get sign in URL
     """
     rule_args = {
@@ -87,7 +87,7 @@ def sign_in_url(driver_name: str = None, redirect: _Union[str, bool] = False, ad
     }
 
     if redirect:
-        rule_args['__redirect'] = redirect
+        rule_args['__redirect'] = redirect.replace('CURRENT_URL', _router.current_url())
 
     return _router.rule_url('auth_ui@sign_in', rule_args, query=add_query, fragment=add_fragment)
 
@@ -111,7 +111,7 @@ def sign_up_form(request: _http.Request = None, driver_name: str = None, **kwarg
     return form
 
 
-def sign_up_url(driver_name: str = None, add_query: dict = None, add_fragment: str = None) -> str:
+def sign_up_url(driver_name: str = None, add_query: dict = None, add_fragment: str = '') -> str:
     """Get sign up URL
     """
     return _router.rule_url('auth_ui@sign_up', {
@@ -123,10 +123,7 @@ def sign_up_url(driver_name: str = None, add_query: dict = None, add_fragment: s
 def sign_out_url(redirect: str = 'CURRENT_URL') -> str:
     """Get sign out URL
     """
-    if redirect == 'CURRENT_URL':
-        redirect = _router.current_url()
-
-    rule_args = {'__redirect': redirect} if redirect else {}
+    rule_args = {'__redirect': redirect.replace('CURRENT_URL', _router.current_url())} if redirect else {}
 
     return _router.rule_url('auth_ui@sign_out', rule_args)
 
@@ -161,5 +158,5 @@ def user_form(request: _http.Request = None, user_uid: str = None) -> _form.Form
     """Get user edit form
     """
     form_cls = _util.get_module_attr(_reg.get('auth_ui.user_form_class', 'plugins.auth_ui._frm.User'))
-    
+
     return form_cls(request or _router.request(), user_uid=user_uid)

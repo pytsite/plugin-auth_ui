@@ -4,6 +4,11 @@
 ## Changelog
 
 
+### 4.10.5 (2019-02-11)
+
+Issues fixed in `*_url()` API functions.
+
+
 ### 4.10.4 (2019-02-11)
 
 `reactstrap`dependency updated.
