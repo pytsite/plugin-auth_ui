@@ -272,14 +272,6 @@ class User(_form.Form):
             max_length=_auth.COUNTRY_MAX_LENGTH,
         ))
 
-        # Postal code
-        contact_left.append_child(_widget.input.Text(
-            uid='postal_code',
-            value=user.postal_code if user else None,
-            label=self.t('postal_code'),
-            max_length=_auth.POSTAL_CODE_MAX_LENGTH,
-        ))
-
         # Province
         contact_left.append_child(_widget.input.Text(
             uid='province',
@@ -294,6 +286,14 @@ class User(_form.Form):
             value=user.city if user else None,
             label=self.t('city'),
             max_length=_auth.CITY_MAX_LENGTH,
+        ))
+
+        # District
+        contact_left.append_child(_widget.input.Text(
+            uid='district',
+            value=user.district if user else None,
+            label=self.t('district'),
+            max_length=_auth.DISTRICT_MAX_LENGTH,
         ))
 
         # Contact info right
@@ -312,10 +312,10 @@ class User(_form.Form):
 
         # House number
         contact_right.append_child(_widget.input.Text(
-            uid='house_number',
-            value=user.house_number if user else None,
-            label=self.t('house_number'),
-            max_length=_auth.HOUSE_NUMBER_MAX_LENGTH,
+            uid='building',
+            value=user.building if user else None,
+            label=self.t('building'),
+            max_length=_auth.BUILDING_MAX_LENGTH,
         ))
 
         # Apt number
@@ -392,14 +392,14 @@ class User(_form.Form):
         security.append_child(_widget.input.Password(
             uid='password',
             label=self.t('new_password'),
-            autocomplete='off',
+            autocomplete='new-password',
         ))
 
         # New password confirm
         security.append_child(_widget.input.Password(
             uid='password_confirm',
             label=self.t('new_password_confirmation'),
-            autocomplete='off',
+            autocomplete='new-password',
         ))
 
         # Row 3
