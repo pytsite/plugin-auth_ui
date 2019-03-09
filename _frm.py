@@ -280,12 +280,12 @@ class User(_form.Form):
             max_length=_auth.POSTAL_CODE_MAX_LENGTH,
         ))
 
-        # Region
+        # Province
         contact_left.append_child(_widget.input.Text(
-            uid='region',
-            value=user.region if user else None,
-            label=self.t('region'),
-            max_length=_auth.REGION_MAX_LENGTH,
+            uid='province',
+            value=user.province if user else None,
+            label=self.t('province'),
+            max_length=_auth.PROVINCE_MAX_LENGTH,
         ))
 
         # City

@@ -4,6 +4,11 @@
 ## Changelog
 
 
+### 4.11 (2019-03-09)
+
+Support of `auth-3.14`.
+
+
 ### 4.10.5 (2019-02-11)
 
 Issues fixed in `*_url()` API functions.
