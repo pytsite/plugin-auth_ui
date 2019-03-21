@@ -94,7 +94,7 @@ class UsersSlots(_widget.Abstract):
 
     def _get_element(self, **kwargs) -> _html.Element:
         self.data.update({
-            'value': _json.dumps([u.uid for u in self.value]),
+            'value': _json.dumps([u.uid for u in (self.value or [])]),
             'max_slots': self._max_slots,
             'modal_title': self._modal_title,
             'modal_ok_button_caption': self._modal_ok_button_caption,

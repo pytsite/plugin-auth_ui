@@ -342,7 +342,6 @@ class User(_form.Form):
             max_rows=10,
             add_btn_label=self.t('add_link'),
             css='col-xs-12 col-12',
-            unique=True,
         ))
         self.add_rule('urls', _validation.rule.Url())
 

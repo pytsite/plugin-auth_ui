@@ -4,6 +4,12 @@
 ## Changelog
 
 
+### 4.13 (2019-03-21)
+
+- Support of `widget-4.16`.
+- CSS fixed.
+
+
 ### 4.12 (2019-03-09)
 
 Support of `auth-3.15`.
