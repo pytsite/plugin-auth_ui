@@ -4,6 +4,11 @@
 ## Changelog
 
 
+### 4.14 (2019-04-08)
+
+`widget.UserSelect` replaced with `Select2` version.
+
+
 ### 4.13 (2019-03-21)
 
 - Support of `widget-4.16`.

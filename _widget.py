@@ -7,7 +7,7 @@ __license__ = 'MIT'
 import json as _json
 from typing import Union as _Union, List as _List, Tuple as _Tuple
 from pytsite import lang as _lang, html as _html
-from plugins import widget as _widget, auth as _auth, query as _query
+from plugins import widget as _widget, auth as _auth, http_api as _http_api
 
 
 class RolesCheckboxes(_widget.select.Checkboxes):
@@ -50,19 +50,15 @@ class RolesCheckboxes(_widget.select.Checkboxes):
         super().set_val(clean_value)
 
 
-class UserSelect(_widget.select.Select):
+class UserSelect(_widget.select.Select2):
     """User Select Widget
     """
 
     def __init__(self, uid: str, **kwargs):
-        super().__init__(uid, **kwargs)
+        kwargs.setdefault('ajax_url', _http_api.url('auth_ui@get_widget_user_select'))
+        kwargs.setdefault('minimum_input_length', 3)
 
-        c_user = _auth.get_current_user()
-        if not c_user.is_admin:
-            self._items.append((c_user.uid, '{} ({})'.format(c_user.first_last_name, c_user.login)))
-        else:
-            for user in _auth.find_users(_query.Query(_query.Eq('status', 'active')), [('first_name', 1)]):
-                self._items.append((user.uid, '{} ({})'.format(user.first_last_name, user.login)))
+        super().__init__(uid, **kwargs)
 
     def set_val(self, value):
         if isinstance(value, _auth.model.AbstractUser):
@@ -71,7 +67,7 @@ class UserSelect(_widget.select.Select):
             # Check user existence
             _auth.get_user(uid=value)
         elif value is not None:
-            raise TypeError('User object, UID or None expected, got {}.'.format(value))
+            raise TypeError('User object, UID or None expected, got {}'.format(value))
 
         return super().set_val(value)
 
@@ -81,6 +77,18 @@ class UserSelect(_widget.select.Select):
             value = _auth.get_user(uid=value)
 
         return value
+
+    def _get_element(self, **kwargs) -> _html.Element:
+        value = self.get_val(**kwargs)
+
+        if value:
+            text = value.first_last_name
+            if _auth.get_current_user().is_admin:
+                text += ' ({})'.format(value.login)
+
+            self._items.append([value.uid, text])
+
+        return super()._get_element(**kwargs)
 
 
 class UsersSlots(_widget.Abstract):
