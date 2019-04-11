@@ -65,6 +65,11 @@ export default class UserSlot extends React.Component {
                 </React.Fragment>
             )
         }
+        else if(this.props.user.hasOwnProperty('url')) {
+            content = (
+                <a href={this.props.user.url}>{content}</a>
+            )
+        }
 
         return (
             <div className={`component-auth-ui component-user-slot ${this.props.className}`}>

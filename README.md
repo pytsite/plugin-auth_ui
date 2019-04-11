@@ -4,6 +4,11 @@
 ## Changelog
 
 
+### 4.14.1 (2019-04-11)
+
+Link fixed in `UserSlot` React component. 
+
+
 ### 4.14 (2019-04-08)
 
 `widget.UserSelect` replaced with `Select2` version.
