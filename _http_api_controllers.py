@@ -14,7 +14,7 @@ class GetWidgetUserSelect(_routing.Controller):
 
         if not _auth.get_current_user().is_admin:
             q.add(_query.Eq('status', 'active'))
-            q.add(_query.Eq('profile_is_public', True))
+            q.add(_query.Eq('is_public', True))
 
         search = self.arg('q')
         if search:

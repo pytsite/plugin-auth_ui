@@ -4,6 +4,11 @@
 ## Changelog
 
 
+### 4.14.3 (2019-05-19)
+
+Obsolete field name usage fixed.
+
+
 ### 4.14.2 (2019-05-19)
 
 Error in `widget.UserSelect.set_val()` fixed.
