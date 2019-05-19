@@ -4,6 +4,11 @@
 ## Changelog
 
 
+### 4.14.2 (2019-05-19)
+
+Error in `widget.UserSelect.set_val()` fixed.
+
+
 ### 4.14.1 (2019-04-11)
 
 Link fixed in `UserSlot` React component. 
