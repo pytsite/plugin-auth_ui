@@ -64,14 +64,10 @@ class UserSelect(_widget.select.Select2):
         if isinstance(value, _auth.model.AbstractUser):
             value = value.uid
         elif isinstance(value, str):
-            if value.strip():
-                # Check user existence
-                _auth.get_user(uid=value)
-            else:
-                value = None
-
-        if value is not None:
-            raise TypeError('User object, UID or None expected, got {}'.format(value))
+            value = value.strip()
+            value = _auth.get_user(uid=value).uid if value else None
+        elif value is not None:
+            raise TypeError('User object, str or None expected, not {}'.format(repr(value)))
 
         return super().set_val(value)
 
