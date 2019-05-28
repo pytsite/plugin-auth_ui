@@ -4,6 +4,11 @@
 ## Changelog
 
 
+### 4.14.5 (2019-05-28)
+
+Missing input fixed in `UserSlot`'s component in disabled state. 
+
+
 ### 4.14.4 (2019-05-19)
 
 Error in `widget.UserSelect.set_val()` fixed.

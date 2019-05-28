@@ -41,6 +41,7 @@ export default class UserSlot extends React.Component {
         else
             content = (
                 <React.Fragment>
+                    <input type="hidden" name={this.props.name + '[]'} value={this.props.user.uid}/>
                     <UserPicture user={this.props.user}/>
                     <div className={'user-title'}>{userTitle}</div>
                 </React.Fragment>
@@ -49,8 +50,6 @@ export default class UserSlot extends React.Component {
         if (this.props.enabled) {
             content = (
                 <React.Fragment>
-                    <input type="hidden" name={this.props.name + '[]'} value={this.props.user.uid}/>
-
                     {content}
 
                     <div className={'slot-actions'}>
