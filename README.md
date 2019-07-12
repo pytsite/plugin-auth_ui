@@ -4,6 +4,11 @@
 ## Changelog
 
 
+### 4.15 (2019-07-12)
+
+Support of `pytsite-9.0`.
+
+
 ### 4.14.5 (2019-05-28)
 
 Missing input fixed in `UserSlot`'s component in disabled state. 
