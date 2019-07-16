@@ -4,6 +4,13 @@
 ## Changelog
 
 
+### 4.16 (2019-07-16)
+
+- Support of `form2`.
+- Support of `auth_http_api-3.4`.
+- Forms' titles removed.
+
+
 ### 4.15 (2019-07-12)
 
 Support of `pytsite-9.0`.

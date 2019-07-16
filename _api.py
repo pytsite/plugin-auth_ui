@@ -6,7 +6,7 @@ __license__ = 'MIT'
 
 from typing import Dict
 from collections import OrderedDict
-from pytsite import router, lang, reg, http, util
+from pytsite import router, reg, http, util
 from plugins import form, http_api
 from . import _error
 from ._driver import Driver as _Driver
@@ -65,17 +65,12 @@ def sign_in_form(request: http.Request = None, driver_name: str = None, **kwargs
     driver = get_driver(driver_name)
 
     kwargs.update({
+        'action': http_api.url('auth_http_api@sign_in', {'driver': driver.name}),
+        'css': kwargs.get('css', '') + ' auth-ui-form auth-ui-sign-in driver-' + driver.name,
         'name': kwargs.get('name', 'auth-ui-sign-in-' + driver.name),
-        'css': kwargs.get('css', '') + ' auth-ui-form auth-ui-sign-in driver-' + driver.name
     })
 
-    frm = driver.get_sign_in_form(request or router.request(), **kwargs)
-    frm.action = http_api.url('auth_http_api@post_sign_in', {'driver': driver.name})
-
-    if not frm.title:
-        frm.title = lang.t('auth_ui@authentication')
-
-    return frm
+    return driver.get_sign_in_form(request or router.request(), **kwargs)
 
 
 def sign_in_url(driver_name: str = None, redirect: str = 'CURRENT_URL', add_query: dict = None,
@@ -98,17 +93,12 @@ def sign_up_form(request: http.Request = None, driver_name: str = None, **kwargs
     driver = get_driver(driver_name)
 
     kwargs.update({
+        'action': http_api.url('auth_http_api@sign_up', {'driver': driver.name}),
+        'css': kwargs.get('css', '') + ' auth-ui-form auth-ui-sign-up driver-' + driver.name,
         'name': kwargs.get('name', 'auth-ui-sign-up-' + driver.name),
-        'css': kwargs.get('css', '') + ' auth-ui-form auth-ui-sign-up driver-' + driver.name
     })
 
-    frm = driver.get_sign_up_form(request or router.request(), **kwargs)
-    frm.action = http_api.url('auth_http_api@post_sign_up', {'driver': driver.name})
-
-    if not frm.title:
-        frm.title = lang.t('auth_ui@registration')
-
-    return frm
+    return driver.get_sign_up_form(request or router.request(), **kwargs)
 
 
 def sign_up_url(driver_name: str = None, add_query: dict = None, add_fragment: str = '') -> str:
@@ -138,12 +128,7 @@ def restore_account_form(request: http.Request = None, driver_name: str = None, 
         'css': kwargs.get('css', '') + ' auth-ui-form auth-ui-restore-account driver-' + driver.name
     })
 
-    frm = driver.get_restore_account_form(request or router.request(), **kwargs)
-
-    if not frm.title:
-        frm.title = lang.t('auth_ui@restore_account')
-
-    return frm
+    return driver.get_restore_account_form(request or router.request(), **kwargs)
 
 
 def role_form(request: http.Request = None, role_uid: str = None) -> form.Form:

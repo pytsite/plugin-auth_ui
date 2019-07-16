@@ -4,12 +4,15 @@ __author__ = 'Oleksandr Shepetko'
 __email__ = 'a@shepetko.com'
 __license__ = 'MIT'
 
-from abc import ABC as _ABC, abstractmethod
+from typing import Union
+from abc import ABC, abstractmethod
 from pytsite import http
-from plugins import form
+from plugins import form, form2
+
+Form = Union[form.Form, form2.Form]
 
 
-class Driver(_ABC):
+class Driver(ABC):
     """PytSite Auth UI Abstract Driver
     """
 
@@ -38,19 +41,19 @@ class Driver(_ABC):
         return self.get_description()
 
     @abstractmethod
-    def get_sign_up_form(self, request: http.Request, **kwargs) -> form.Form:
+    def get_sign_up_form(self, request: http.Request, **kwargs) -> Form:
         """Get sign up form
         """
         pass
 
     @abstractmethod
-    def get_sign_in_form(self, request: http.Request, **kwargs) -> form.Form:
+    def get_sign_in_form(self, request: http.Request, **kwargs) -> Form:
         """Get sign in form
         """
         pass
 
     @abstractmethod
-    def get_restore_account_form(self, request: http.Request, **kwargs) -> form.Form:
+    def get_restore_account_form(self, request: http.Request, **kwargs) -> Form:
         """Get account restoration form
         """
         pass
