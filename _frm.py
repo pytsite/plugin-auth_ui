@@ -410,7 +410,7 @@ class User(form.Form):
         # Description
         row_3.append_child(widget.input.TextArea(
             uid='description',
-            value=user.description if user else None,
+            value=user.description if user else '',
             max_length=auth.USER_DESCRIPTION_MAX_LENGTH,
         ))
 

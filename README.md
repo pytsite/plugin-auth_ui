@@ -4,6 +4,11 @@
 ## Changelog
 
 
+### 4.16.1 (2019-07-25)
+
+Improper widget usage fixed.
+
+
 ### 4.16 (2019-07-16)
 
 - Support of `form2`.
