@@ -84,9 +84,11 @@ class SignUpConfirm(routing.Controller):
 
     def exec(self):
         try:
+            # Search for user
             user = next(auth.find_users(query.Query(query.Eq('confirmation_hash', self.arg('code')))))
         except StopIteration:
-            return self.redirect(self.arg('__redirect', _api.sign_in_url()))
+            # No user found, redirect to sign in URL
+            return self.redirect(_api.sign_in_url(redirect=router.base_url()))
 
         try:
             auth.switch_user_to_system()
@@ -99,7 +101,7 @@ class SignUpConfirm(routing.Controller):
 
         router.session().add_success_message(lang.t('auth_ui@registration_confirm_success'))
 
-        return self.redirect(self.arg('__redirect', _api.sign_in_url()))
+        return self.redirect(_api.sign_in_url(redirect=router.base_url()))
 
 
 class SignOut(routing.Controller):
